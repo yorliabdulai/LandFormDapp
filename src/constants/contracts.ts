@@ -32,6 +32,50 @@ export const LandFormABI =[
     "type": "event"
   },
   {
+    "inputs": [
+      {
+        "internalType": "string",
+        "name": "_title",
+        "type": "string"
+      },
+      {
+        "internalType": "string",
+        "name": "_location",
+        "type": "string"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_pricePerShare",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_totalShares",
+        "type": "uint256"
+      },
+      {
+        "internalType": "string",
+        "name": "_imageURL",
+        "type": "string"
+      },
+      {
+        "internalType": "string",
+        "name": "_description",
+        "type": "string"
+      }
+    ],
+    "name": "createProject",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
     "anonymous": false,
     "inputs": [
       {

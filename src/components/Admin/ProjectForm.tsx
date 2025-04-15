@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import {useEstimateGas} from "wagmi";
 import { useForm } from "react-hook-form";
 import { Save, ArrowLeft, Trash2, ImagePlus, MapPin, DollarSign, Hash, Power } from "lucide-react";
 import toast from "react-hot-toast";
@@ -14,6 +15,7 @@ import {
   useDeleteProjectSimulate,
   ProjectData
 } from "@/hooks/useProjects";
+import { encodeFunctionData, parseGwei } from "viem";
 
 
 interface ProjectFormData {
@@ -181,7 +183,24 @@ setTimeout(() => {
       setPreviewImage(imageURL);
     }
   }, [imageURL]);
+  const { data: gasEstimate } = useEstimateGas({
+    to: import.meta.env.VITE_CONTRACT_ADDRESS,
+    data: encodeFunctionData({
+      abi: LandFormABI,
+      functionName: 'addProject',
+      args: [
+        watch('title') || '',
+        watch('location') || '',
+        parseFloat(watch('pricePerShare') || '0'),
+        watch('totalShares') || 0,
+        watch('imageURL') || '',
+        watch('description') || ''
+      ],
+    }),
+  });
   
+  // Log the estimate
+  console.log('Estimated gas:', gasEstimate); 
   // Watch transaction status and update UI accordingly
   useEffect(() => {
     if (!isPending && isSubmitting) {
@@ -292,7 +311,9 @@ console.log("Create project simulation:", createProjectSimulation);
           BigInt(parseInt(data.totalShares.toString())),
           data.imageURL || '',
           data.description
-        ]
+        ],
+        gas: 300000n, // Set a reasonable gas limit
+        gasPrice: parseGwei('5') // Set a reasonable gas price in gwei
       });
       
       // Success! Navigate to projects page

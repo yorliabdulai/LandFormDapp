@@ -31,6 +31,7 @@ const ProjectDetails = () => {
     functionName: 'getProject',
     args: [BigInt(id || '0')],
   });
+  
 
   useEffect(() => {
     if (data) {

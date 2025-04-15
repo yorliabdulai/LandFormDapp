@@ -27,7 +27,8 @@ const ManageProjects: React.FC = () => {
     totalShares: number;
   }
   
-  const projects = projectsData as Project[];
+  // Ensure projectsData is not undefined before casting
+  const projects: Project[] = projectsData ? (projectsData as Project[]) : [];
 
   return (
     <div className="p-6 max-w-7xl mx-auto">
