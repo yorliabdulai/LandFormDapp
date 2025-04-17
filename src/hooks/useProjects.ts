@@ -102,7 +102,7 @@ export const useCreateProjectSimulate = (projectData: {
     : projectData.totalShares;
   
   // Calculate Wei amount carefully
-  const priceInWei = BigInt(Math.floor(price * 10**18));
+  const priceInWei = BigInt(Math.floor(price));
   
   return useSimulateContract({
     abi: LandFormABI,
@@ -138,7 +138,7 @@ export const useEditProjectMetadataSimulate = (
       BigInt(id),
       newProjectData.title,
       newProjectData.location,
-      BigInt(Math.floor(newProjectData.pricePerShare * 10**18)), // Convert to Wei
+      BigInt(Math.floor(newProjectData.pricePerShare)), 
       newProjectData.imageURL || '',
       newProjectData.description || '',
     ],
@@ -188,11 +188,11 @@ export const useCreateProject = () => {
       const hash = await writeContract({
         abi: LandFormABI,
         address: CONTRACT_ADDRESS,
-        functionName: 'createProject',
+        functionName: 'addProject',
         args: [
           projectData.title,
           projectData.location,
-          BigInt(Math.floor(projectData.pricePerShare * 10**18)), // Convert to Wei
+          BigInt(Math.floor(projectData.pricePerShare)), // Convert to Wei
           BigInt(projectData.totalShares),
           projectData.imageURL || '',
           projectData.description || '',
@@ -230,7 +230,7 @@ export const useEditProjectMetadata = () => {
           BigInt(id),
           newProjectData.title,
           newProjectData.location,
-          BigInt(Math.floor(newProjectData.pricePerShare * 10**18)), // Convert to Wei
+          BigInt(Math.floor(newProjectData.pricePerShare)), // Convert to Wei
           newProjectData.imageURL || '',
           newProjectData.description || '',
         ],

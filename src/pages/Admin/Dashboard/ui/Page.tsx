@@ -29,12 +29,12 @@ import {
 } from "lucide-react";
 
 export interface ProjectData {
-  id: number;
+  id: number | bigint;
   title: string;
   location: string;
-  pricePerShare: number;
-  totalShares: number;
-  availableShares: number;
+  pricePerShare: number | bigint;
+  totalShares: number | bigint;
+  availableShares: number | bigint;
   imageURL: string;
   description: string;
 }
@@ -273,22 +273,22 @@ if (projectsError || ownerError) {
 
   const projects = (projectsData ?? []) as ProjectData[];
 
-  // Data for charts
+  // Data for charts - Convert BigInt values to Numbers
   const shareDistributionData = [
     { 
       name: 'Available Shares', 
-      value: projects.reduce((acc, project) => acc + project.availableShares, 0) 
+      value: projects.reduce((acc, project) => acc + Number(project.availableShares), 0) 
     },
     { 
       name: 'Sold Shares', 
-      value: projects.reduce((acc, project) => acc + (project.totalShares - project.availableShares), 0) 
+      value: projects.reduce((acc, project) => acc + (Number(project.totalShares) - Number(project.availableShares)), 0) 
     }
   ];
 
   const projectSharesData = projects.map(project => ({
     name: project.title.length > 15 ? project.title.substring(0, 12) + '...' : project.title,
-    available: project.availableShares,
-    sold: project.totalShares - project.availableShares
+    available: Number(project.availableShares),
+    sold: Number(project.totalShares) - Number(project.availableShares)
   }));
 
   // Count events by type
@@ -352,7 +352,7 @@ if (projectsError || ownerError) {
               <div>
                 <p className="text-sm font-medium text-gray-500">Total Shares</p>
                 <p className="text-2xl font-bold text-gray-900 mt-1">
-                  {projects.reduce((acc, project) => acc + project.totalShares, 0)}
+                  {projects.reduce((acc, project) => acc + Number(project.totalShares), 0)}
                 </p>
               </div>
               <div className="p-3 bg-secondary-50 rounded-full">
@@ -366,15 +366,15 @@ if (projectsError || ownerError) {
                   style={{ 
                     width: `${Math.min(
                       100,
-                      (projects.reduce((acc, project) => acc + project.availableShares, 0) /
-                        Math.max(1, projects.reduce((acc, project) => acc + project.totalShares, 0))) * 100
+                      (projects.reduce((acc, project) => acc + Number(project.availableShares), 0) /
+                        Math.max(1, projects.reduce((acc, project) => acc + Number(project.totalShares), 0))) * 100
                     )}%` 
                   }}
                 ></div>
               </div>
               <div className="flex justify-between mt-1 text-xs text-gray-500">
-                <span>Available: {projects.reduce((acc, project) => acc + project.availableShares, 0)}</span>
-                <span>Sold: {projects.reduce((acc, project) => acc + (project.totalShares - project.availableShares), 0)}</span>
+                <span>Available: {projects.reduce((acc, project) => acc + Number(project.availableShares), 0)}</span>
+                <span>Sold: {projects.reduce((acc, project) => acc + (Number(project.totalShares) - Number(project.availableShares)), 0)}</span>
               </div>
             </div>
           </div>
@@ -510,7 +510,7 @@ if (projectsError || ownerError) {
                 <BarChart
                   data={projects.map((p) => ({
                     name: p.title.length > 15 ? p.title.substring(0, 12) + "..." : p.title,
-                    price: p.pricePerShare,
+                    price: Number(p.pricePerShare),
                   }))}
                   margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
                 >
@@ -636,28 +636,25 @@ if (projectsError || ownerError) {
                 </thead>
                 <tbody className="bg-white divide-y divide-gray-200">
                   {projects.map((project) => (
-                    <tr key={project.id} className="hover:bg-gray-50">
+                    <tr key={Number(project.id)} className="hover:bg-gray-50">
                       <td className="px-6 py-4 whitespace-nowrap">
                         <div className="flex items-center">
                           <div className="flex-shrink-0 h-10 w-10 rounded-md overflow-hidden">
                             {project.imageURL ? (
                               <img 
                                 src={project.imageURL} 
-                                alt={project.title} 
+                                alt={project.title}
                                 className="h-10 w-10 object-cover" 
-                                onError={(e) => {
-                                  (e.target as HTMLImageElement).src = "/api/placeholder/40/40";
-                                }}
                               />
                             ) : (
-                              <div className="h-10 w-10 bg-gray-200 flex items-center justify-center">
-                                <span className="text-xs text-gray-500">{project.title.charAt(0)}</span>
+                              <div className="h-10 w-10 bg-gray-200 flex items-center justify-center rounded-md">
+                                <Briefcase className="h-5 w-5 text-gray-400" />
                               </div>
                             )}
                           </div>
                           <div className="ml-4">
                             <div className="text-sm font-medium text-gray-900">{project.title}</div>
-                            <div className="text-xs text-gray-500">ID: {project.id}</div>
+                            <div className="text-xs text-gray-500">ID: {project.id.toString()}</div>
                           </div>
                         </div>
                       </td>
@@ -665,52 +662,54 @@ if (projectsError || ownerError) {
                         {project.location}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                        {project.pricePerShare} ETH
+                        {Number(project.pricePerShare)} ETH
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                         <div>
-                          <div className="flex justify-between text-xs mb-1">
-                            <span>Available: {project.availableShares}</span>
-                            <span>Total: {project.totalShares}</span>
+                          <div className="flex items-center">
+                            <span className="mr-2">{Number(project.availableShares)}/{Number(project.totalShares)}</span>
+                            <span className="text-xs text-green-600">{Math.round((Number(project.availableShares) / Number(project.totalShares)) * 100)}%</span>
                           </div>
-                          <div className="w-full bg-gray-200 rounded-full h-2">
+                          <div className="w-full bg-gray-200 rounded-full h-1.5 mt-1">
                             <div 
-                              className="bg-primary-500 h-2 rounded-full" 
-                              style={{ width: `${(project.availableShares / project.totalShares) * 100}%` }}
+                              className="bg-primary-600 h-1.5 rounded-full" 
+                              style={{ width: `${(Number(project.availableShares) / Number(project.totalShares)) * 100}%` }}
                             ></div>
                           </div>
                         </div>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
-                        {project.availableShares > 0 ? (
-                          <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
-                            Active
+                        {Number(project.availableShares) === 0 ? (
+                          <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">
+                            Sold Out
+                          </span>
+                        ) : Number(project.availableShares) < Number(project.totalShares) / 2 ? (
+                          <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">
+                            Selling Fast
                           </span>
                         ) : (
-                          <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">
-                            Inactive
+                          <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                            Available
                           </span>
                         )}
                       </td>
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        <div className="flex items-center space-x-2">
-                          <button
-                            onClick={() => window.location.href = `/admin/projects/edit/${project.id}`}
-                            className="px-3 py-1 bg-yellow-500 text-white rounded hover:bg-yellow-600 transition"
-                          >
-                            Edit
-                          </button>
-                          <button
-                            onClick={() => {
-                              if (window.confirm("Are you sure you want to delete this project?")) {
-                                toast.success("Project deleted (action pending implementation)");
-                              }
-                            }}
-                            className="px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600 transition"
-                          >
-                            Delete
-                          </button>
-                        </div>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm">
+                        <button
+                          onClick={() => {
+                            toast(`Project details feature coming soon!`, { icon: 'ℹ️' });
+                          }}
+                          className="text-primary-600 hover:text-primary-900 mr-3"
+                        >
+                          View
+                        </button>
+                        <button
+                          onClick={() => {
+                            toast(`Edit project feature coming soon!`, { icon: 'ℹ️' });
+                          }}
+                          className="text-gray-600 hover:text-gray-900"
+                        >
+                          Edit
+                        </button>
                       </td>
                     </tr>
                   ))}
@@ -718,6 +717,20 @@ if (projectsError || ownerError) {
               </table>
             </div>
           )}
+        </div>
+      </div>
+
+      {/* Footer */}
+      <div className="bg-white border-t border-gray-200 mt-8">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+          <div className="flex justify-between items-center">
+            <div className="text-sm text-gray-500">
+              &copy; {new Date().getFullYear()} LandForm. All rights reserved.
+            </div>
+            <div className="text-sm text-gray-500">
+              Connected to <span className="font-medium">{publicClient?.chain?.name || "Unknown Network"}</span>
+            </div>
+          </div>
         </div>
       </div>
     </div>

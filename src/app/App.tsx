@@ -14,6 +14,7 @@ import { Projects } from "@/pages/Projects";
 // RainbowKit styles
 import "@rainbow-me/rainbowkit/styles.css";
 import ProjectForm from "@/components/Admin/ProjectForm";
+import ProjectDetails from "@/components/ProjectDetails";
 
 const queryClient = new QueryClient();
 
@@ -28,6 +29,7 @@ const App: FC = () => {
                 <Route index element={<Home />} />
                 <Route path="projects" element={<Projects />} />
                 <Route path="dashboard" element={<Dashboard />} />
+                <Route path="/projects/:id" element={<ProjectDetails />} />
                 <Route path="*" element={<NoMatch />} />
               </Route>
               

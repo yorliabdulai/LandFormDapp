@@ -16,7 +16,7 @@ const Dashboard = () => {
     availableShares: number;
     soldShares: number;
     investmentValue: number;
-    imageHash: string;
+    imageURL: string;
     description: string;
     isActive: boolean;
   };
@@ -62,7 +62,7 @@ const Dashboard = () => {
             soldShares: Number(project.totalShares) - Number(project.availableShares),
             investmentValue: (Number(project.totalShares) - Number(project.availableShares)) * 
                             (Number(project.pricePerShare) / 10**18),
-            imageHash: project.imageHash,
+            imageURL: project.imageURL,
             description: project.description,
             isActive: project.isActive
           }));

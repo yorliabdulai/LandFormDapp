@@ -1,8 +1,8 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react-swc";
 import path from "path";
+import rollupNodePolyFill from "rollup-plugin-node-polyfills";
 
-// https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react()],
   resolve: {
@@ -11,9 +11,24 @@ export default defineConfig({
       "@widgets": path.resolve("src/widgets"),
       "@features": path.resolve("src/features"),
       "@entities": path.resolve("src/entities"),
+      buffer: "buffer/", 
     },
   },
+  define: {
+    global: "globalThis", 
+  },
   optimizeDeps: {
-    include: ['eth-query', 'json-rpc-random-id'],
+    include: [
+      "buffer",
+      "eth-query",
+      "json-rpc-random-id",
+    ],
+  },
+  build: {
+    rollupOptions: {
+      plugins: [
+        rollupNodePolyFill(), 
+      ],
+    },
   },
 });

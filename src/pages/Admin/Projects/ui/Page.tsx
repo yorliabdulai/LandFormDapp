@@ -22,9 +22,9 @@ const ManageProjects: React.FC = () => {
     id: string;
     title: string;
     location: string;
-    pricePerShare: number;
-    availableShares: number;
-    totalShares: number;
+    pricePerShare: number | bigint;
+    availableShares: number | bigint;
+    totalShares: number | bigint;
   }
   
   // Ensure projectsData is not undefined before casting
@@ -71,19 +71,23 @@ const ManageProjects: React.FC = () => {
                     <td className="px-6 py-4 text-sm text-foreground">{project.id}</td>
                     <td className="px-6 py-4 font-medium text-foreground">{project.title}</td>
                     <td className="px-6 py-4 text-sm text-muted-foreground">{project.location}</td>
-                    <td className="px-6 py-4 text-sm font-medium text-foreground">{project.pricePerShare}</td>
+                    <td className="px-6 py-4 text-sm font-medium text-foreground">
+                      {typeof project.pricePerShare === 'bigint' 
+                        ? Number(project.pricePerShare) 
+                        : project.pricePerShare}
+                    </td>
                     <td className="px-6 py-4">
                       <div className="flex items-center gap-2">
                         <div className="w-full bg-gray-200 rounded-full h-2.5">
                           <div 
                             className="bg-primary-500 h-2.5 rounded-full" 
                             style={{ 
-                              width: `${(project.availableShares / project.totalShares) * 100}%` 
+                              width: `${(Number(project.availableShares) / Number(project.totalShares)) * 100}%` 
                             }}
                           ></div>
                         </div>
                         <span className="text-sm text-muted-foreground whitespace-nowrap">
-                          {project.availableShares} / {project.totalShares}
+                          {project.availableShares.toString()} / {project.totalShares.toString()}
                         </span>
                       </div>
                     </td>

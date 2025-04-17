@@ -18,6 +18,8 @@
     "@tanstack/react-query": "^5.72.0",
     "@types/react-router-dom": "^5.3.3",
     "@wagmi/chains": "^1.8.0",
+    "buffer": "^6.0.3",
+    "ipfs-http-client": "^60.0.1",
     "lucide-react": "^0.487.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
@@ -25,6 +27,7 @@
     "react-hot-toast": "^2.5.2",
     "recharts": "^2.15.2",
     "redux": "^4.2.1",
+    "rollup-plugin-node-polyfills": "^0.2.1",
     "tailwindcss-animate": "^1.0.7",
     "viem": "^2.26.2",
     "wagmi": "^2.14.16"

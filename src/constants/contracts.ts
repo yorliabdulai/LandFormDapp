@@ -32,50 +32,6 @@ export const LandFormABI =[
     "type": "event"
   },
   {
-    "inputs": [
-      {
-        "internalType": "string",
-        "name": "_title",
-        "type": "string"
-      },
-      {
-        "internalType": "string",
-        "name": "_location",
-        "type": "string"
-      },
-      {
-        "internalType": "uint256",
-        "name": "_pricePerShare",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "_totalShares",
-        "type": "uint256"
-      },
-      {
-        "internalType": "string",
-        "name": "_imageURL",
-        "type": "string"
-      },
-      {
-        "internalType": "string",
-        "name": "_description",
-        "type": "string"
-      }
-    ],
-    "name": "createProject",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
     "anonymous": false,
     "inputs": [
       {
@@ -201,7 +157,7 @@ export const LandFormABI =[
       },
       {
         "internalType": "string",
-        "name": "_imageHash",
+        "name": "_imageId",
         "type": "string"
       },
       {
@@ -211,6 +167,19 @@ export const LandFormABI =[
       }
     ],
     "name": "addProject",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "projectId",
+        "type": "uint256"
+      }
+    ],
+    "name": "deleteProject",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -253,7 +222,7 @@ export const LandFormABI =[
           },
           {
             "internalType": "string",
-            "name": "imageHash",
+            "name": "imageId",
             "type": "string"
           },
           {
@@ -313,7 +282,7 @@ export const LandFormABI =[
           },
           {
             "internalType": "string",
-            "name": "imageHash",
+            "name": "imageId",
             "type": "string"
           },
           {
@@ -330,6 +299,85 @@ export const LandFormABI =[
         "internalType": "struct LandForm.Project[]",
         "name": "",
         "type": "tuple[]"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "projectId",
+        "type": "uint256"
+      }
+    ],
+    "name": "getProject",
+    "outputs": [
+      {
+        "components": [
+          {
+            "internalType": "uint256",
+            "name": "id",
+            "type": "uint256"
+          },
+          {
+            "internalType": "string",
+            "name": "title",
+            "type": "string"
+          },
+          {
+            "internalType": "string",
+            "name": "location",
+            "type": "string"
+          },
+          {
+            "internalType": "uint256",
+            "name": "pricePerShare",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "totalShares",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "availableShares",
+            "type": "uint256"
+          },
+          {
+            "internalType": "string",
+            "name": "imageId",
+            "type": "string"
+          },
+          {
+            "internalType": "string",
+            "name": "description",
+            "type": "string"
+          },
+          {
+            "internalType": "bool",
+            "name": "isActive",
+            "type": "bool"
+          }
+        ],
+        "internalType": "struct LandForm.Project",
+        "name": "",
+        "type": "tuple"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "getProjectCount",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
       }
     ],
     "stateMutability": "view",
@@ -434,7 +482,7 @@ export const LandFormABI =[
       },
       {
         "internalType": "string",
-        "name": "imageHash",
+        "name": "imageId",
         "type": "string"
       },
       {
@@ -506,7 +554,7 @@ export const LandFormABI =[
       },
       {
         "internalType": "string",
-        "name": "_imageHash",
+        "name": "_imageId",
         "type": "string"
       },
       {

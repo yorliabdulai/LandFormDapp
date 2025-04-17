@@ -23,7 +23,7 @@ interface Project {
   id: string | number;
   title: string;
   location: string;
-  imageHash?: string;
+  imageURL?: string;
   pricePerShare: string | number;
   availableShares: string | number;
   totalShares: string | number;
@@ -288,7 +288,7 @@ const Home = () => {
                   >
                     <div className="relative">
                       <img 
-                        src={project.imageHash ? `https://ipfs.io/ipfs/${project.imageHash}` : "/api/placeholder/400/250"} 
+                        src={project.imageURL ? `https://api.filebase.io/v1/ipfs/${project.imageURL}` : "/api/placeholder/400/250"} 
                         alt={project.title} 
                         className="w-full h-48 object-cover"
                       />
