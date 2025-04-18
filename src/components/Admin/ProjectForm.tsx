@@ -3,7 +3,6 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { Save, ArrowLeft, Trash2, ImagePlus, MapPin, DollarSign, Hash, Upload } from "lucide-react";
 import toast from "react-hot-toast";
-import { parseGwei } from "viem";
 import { LandFormABI, CONTRACT_ADDRESS } from "@/constants/contracts";
 import { 
   useProject, 
@@ -17,31 +16,31 @@ import {
 } from "@/hooks/useProjects";
 
 // Configure IPFS client
-const uploadToFilebase = async (file: File) => {
-  const formData = new FormData();
-  formData.append("file", file);
+// const uploadToFilebase = async (file: File) => {
+//   const formData = new FormData();
+//   formData.append("file", file);
 
-  try {
-    const response = await fetch("https://api.filebase.io/v1/ipfs/add", {
-      method: "POST",
-      headers: {
-        Authorization: "Basic " + btoa(`${import.meta.env.VITE_FILEBASE_API_KEY}:${import.meta.env.VITE_FILEBASE_API_SECRET}`)
-      },
-      body: formData
-    });
+//   try {
+//     const response = await fetch("https://api.filebase.io/v1/ipfs/add", {
+//       method: "POST",
+//       headers: {
+//         Authorization: "Basic " + btoa(`${import.meta.env.VITE_FILEBASE_API_KEY}:${import.meta.env.VITE_FILEBASE_API_SECRET}`)
+//       },
+//       body: formData
+//     });
 
-    if (!response.ok) {
-      throw new Error(`Upload failed: ${response.statusText}`);
-    }
+//     if (!response.ok) {
+//       throw new Error(`Upload failed: ${response.statusText}`);
+//     }
 
-    const data = await response.json();
-    console.log("Upload success", data);
-    return data.cid; // This is your IPFS hash
-  } catch (err) {
-    console.error("Filebase IPFS upload error:", err);
-    throw err;
-  }
-};
+//     const data = await response.json();
+//     console.log("Upload success", data);
+//     return data.cid; // This is your IPFS hash
+//   } catch (err) {
+//     console.error("Filebase IPFS upload error:", err);
+//     throw err;
+//   }
+// };
 
 
 interface ProjectFormData {
@@ -157,7 +156,7 @@ const ProjectForm: React.FC = () => {
       
       // Set preview image if there's an IPFS hash
       if (project.imageURL) {
-        setPreviewImage(`https://ipfs.io/ipfs/${project.imageURL}`);
+        setPreviewImage(`https://api.filebase.io/v1/ipfs/${project.imageURL}`);
       }
     }
   }, [isEditMode, projectData, setValue]);
@@ -165,7 +164,7 @@ const ProjectForm: React.FC = () => {
   // Watch for imageHash changes to update preview
   useEffect(() => {
     if (imageHash && imageHash.trim() !== '') {
-      setPreviewImage(`https://ipfs.io/ipfs/${imageHash}`);
+      setPreviewImage(`https://api.filebase.io/v1/ipfs/${imageHash}`);
     }
   }, [imageHash]);
   
