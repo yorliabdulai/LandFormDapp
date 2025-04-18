@@ -6,7 +6,6 @@ import toast from 'react-hot-toast';
 import { formatAddress, formatNumber } from '../../../../utils/formatAddress';
 
 const Dashboard = () => {
-  // State for dashboard data
   type Project = {
     id: number;
     title: string;
@@ -44,7 +43,7 @@ const Dashboard = () => {
     { name: 'Jun', value: 1200 },
   ];
 
-  // Process data from smart contract
+ 
   useEffect(() => {
     const processData = async () => {
       try {
@@ -160,70 +159,70 @@ const Dashboard = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 py-12">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 flex items-center">
-            <Briefcase className="w-8 h-8 mr-3 text-primary-600" />
+    <div className="bg-gray-50 py-6 md:py-12">
+      <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="mb-6 md:mb-8">
+          <h1 className="text-2xl md:text-3xl font-bold text-gray-900 flex items-center">
+            <Briefcase className="w-6 h-6 md:w-8 md:h-8 mr-2 md:mr-3 text-primary-600" />
             LandForm Dashboard
           </h1>
-          <p className="text-gray-600 mt-2">Overview of your land investment platform performance</p>
+          <p className="text-sm md:text-base text-gray-600 mt-1 md:mt-2">Overview of your land investment platform performance</p>
         </div>
 
         {/* Key metrics */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-          <div className="bg-white p-6 rounded-lg shadow hover:shadow-md transition-shadow">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 mb-6 md:mb-8">
+          <div className="bg-white p-4 md:p-6 rounded-lg shadow hover:shadow-md transition-shadow">
             <div className="flex justify-between items-start">
-              <h3 className="text-gray-500 text-sm font-medium">Total Investment</h3>
-              <div className="p-2 bg-green-100 rounded-full">
-                <TrendingUp className="w-5 h-5 text-green-600" />
+              <h3 className="text-gray-500 text-xs md:text-sm font-medium">Total Investment</h3>
+              <div className="p-1 md:p-2 bg-green-100 rounded-full">
+                <TrendingUp className="w-4 h-4 md:w-5 md:h-5 text-green-600" />
               </div>
             </div>
-            <p className="text-3xl font-bold text-gray-900 mb-2">{formatNumber(totalInvestment, 2)} APE</p>
-            <div className="flex items-center text-green-500">
-              <ArrowUp className="w-4 h-4 mr-1" />
-              <span className="text-sm">12.5% from last month</span>
+            <p className="text-xl md:text-3xl font-bold text-gray-900 mb-1 md:mb-2">{formatNumber(totalInvestment, 2)} APE</p>
+            <div className="flex items-center text-green-500 text-xs md:text-sm">
+              <ArrowUp className="w-3 h-3 md:w-4 md:h-4 mr-1" />
+              <span>12.5% from last month</span>
             </div>
           </div>
           
-          <div className="bg-white p-6 rounded-lg shadow hover:shadow-md transition-shadow">
+          <div className="bg-white p-4 md:p-6 rounded-lg shadow hover:shadow-md transition-shadow">
             <div className="flex justify-between items-start">
-              <h3 className="text-gray-500 text-sm font-medium">Total Investors</h3>
-              <div className="p-2 bg-blue-100 rounded-full">
-                <Users className="w-5 h-5 text-blue-600" />
+              <h3 className="text-gray-500 text-xs md:text-sm font-medium">Total Investors</h3>
+              <div className="p-1 md:p-2 bg-blue-100 rounded-full">
+                <Users className="w-4 h-4 md:w-5 md:h-5 text-blue-600" />
               </div>
             </div>
-            <p className="text-3xl font-bold text-gray-900 mb-2">{totalInvestors}</p>
-            <div className="flex items-center text-green-500">
-              <ArrowUp className="w-4 h-4 mr-1" />
-              <span className="text-sm">8.2% from last month</span>
+            <p className="text-xl md:text-3xl font-bold text-gray-900 mb-1 md:mb-2">{totalInvestors}</p>
+            <div className="flex items-center text-green-500 text-xs md:text-sm">
+              <ArrowUp className="w-3 h-3 md:w-4 md:h-4 mr-1" />
+              <span>8.2% from last month</span>
             </div>
           </div>
           
-          <div className="bg-white p-6 rounded-lg shadow hover:shadow-md transition-shadow">
+          <div className="bg-white p-4 md:p-6 rounded-lg shadow hover:shadow-md transition-shadow">
             <div className="flex justify-between items-start">
-              <h3 className="text-gray-500 text-sm font-medium">Total Projects</h3>
-              <div className="p-2 bg-purple-100 rounded-full">
-                <FileSpreadsheet className="w-5 h-5 text-purple-600" />
+              <h3 className="text-gray-500 text-xs md:text-sm font-medium">Total Projects</h3>
+              <div className="p-1 md:p-2 bg-purple-100 rounded-full">
+                <FileSpreadsheet className="w-4 h-4 md:w-5 md:h-5 text-purple-600" />
               </div>
             </div>
-            <p className="text-3xl font-bold text-gray-900 mb-2">{projects.length}</p>
-            <div className="flex items-center text-green-500">
-              <ArrowUp className="w-4 h-4 mr-1" />
-              <span className="text-sm">New project this week</span>
+            <p className="text-xl md:text-3xl font-bold text-gray-900 mb-1 md:mb-2">{projects.length}</p>
+            <div className="flex items-center text-green-500 text-xs md:text-sm">
+              <ArrowUp className="w-3 h-3 md:w-4 md:h-4 mr-1" />
+              <span>New project this week</span>
             </div>
           </div>
           
-          <div className="bg-white p-6 rounded-lg shadow hover:shadow-md transition-shadow">
+          <div className="bg-white p-4 md:p-6 rounded-lg shadow hover:shadow-md transition-shadow">
             <div className="flex justify-between items-start">
-              <h3 className="text-gray-500 text-sm font-medium">Shares Sold</h3>
-              <div className="p-2 bg-amber-100 rounded-full">
-                <PieChartIcon className="w-5 h-5 text-amber-600" />
+              <h3 className="text-gray-500 text-xs md:text-sm font-medium">Shares Sold</h3>
+              <div className="p-1 md:p-2 bg-amber-100 rounded-full">
+                <PieChartIcon className="w-4 h-4 md:w-5 md:h-5 text-amber-600" />
               </div>
             </div>
-            <p className="text-3xl font-bold text-gray-900 mb-2">{formatNumber(soldShares)}</p>
+            <p className="text-xl md:text-3xl font-bold text-gray-900 mb-1 md:mb-2">{formatNumber(soldShares)}</p>
             <div className="flex items-center">
-              <span className="text-sm text-gray-500">
+              <span className="text-xs md:text-sm text-gray-500">
                 {totalShares > 0 ? ((soldShares / totalShares) * 100).toFixed(1) : 0}% of total shares
               </span>
             </div>
@@ -231,22 +230,22 @@ const Dashboard = () => {
         </div>
 
         {/* Charts */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6 md:mb-8">
           {/* Share Distribution */}
-          <div className="bg-white p-6 rounded-lg shadow hover:shadow-md transition-shadow">
-            <h3 className="text-lg font-medium text-gray-900 mb-6 flex items-center">
-              <PieChartIcon className="w-5 h-5 mr-2 text-primary-600" />
+          <div className="bg-white p-4 md:p-6 rounded-lg shadow hover:shadow-md transition-shadow">
+            <h3 className="text-base md:text-lg font-medium text-gray-900 mb-4 md:mb-6 flex items-center">
+              <PieChartIcon className="w-4 h-4 md:w-5 md:h-5 mr-2 text-primary-600" />
               Share Distribution
             </h3>
-            <div className="h-64">
+            <div className="h-48 md:h-64">
               <ResponsiveContainer width="100%" height="100%">
                 <PieChart>
                   <Pie
                     data={shareDistributionData}
                     cx="50%"
                     cy="50%"
-                    innerRadius={60}
-                    outerRadius={90}
+                    innerRadius={40}
+                    outerRadius={70}
                     fill="#8884d8"
                     paddingAngle={5}
                     dataKey="value"
@@ -260,31 +259,31 @@ const Dashboard = () => {
                 </PieChart>
               </ResponsiveContainer>
             </div>
-            <div className="flex justify-center mt-4">
-              <div className="flex items-center mr-6">
-                <div className="w-4 h-4 bg-primary-600 rounded-full mr-2"></div>
-                <span className="text-sm text-gray-600">Sold</span>
+            <div className="flex justify-center mt-2 md:mt-4">
+              <div className="flex items-center mr-4 md:mr-6">
+                <div className="w-3 h-3 md:w-4 md:h-4 bg-primary-600 rounded-full mr-1 md:mr-2"></div>
+                <span className="text-xs md:text-sm text-gray-600">Sold</span>
               </div>
               <div className="flex items-center">
-                <div className="w-4 h-4 bg-gray-200 rounded-full mr-2"></div>
-                <span className="text-sm text-gray-600">Available</span>
+                <div className="w-3 h-3 md:w-4 md:h-4 bg-gray-200 rounded-full mr-1 md:mr-2"></div>
+                <span className="text-xs md:text-sm text-gray-600">Available</span>
               </div>
             </div>
           </div>
           
           {/* Monthly Investment */}
-          <div className="bg-white p-6 rounded-lg shadow hover:shadow-md transition-shadow">
-            <div className="flex justify-between items-center mb-6">
-              <h3 className="text-lg font-medium text-gray-900 flex items-center">
-                <Activity className="w-5 h-5 mr-2 text-primary-600" />
+          <div className="bg-white p-4 md:p-6 rounded-lg shadow hover:shadow-md transition-shadow">
+            <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-4 md:mb-6">
+              <h3 className="text-base md:text-lg font-medium text-gray-900 flex items-center mb-2 sm:mb-0">
+                <Activity className="w-4 h-4 md:w-5 md:h-5 mr-2 text-primary-600" />
                 Monthly Investment 
                 <span className="ml-2 text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded-full">
                   Historical Data
                 </span>
               </h3>
-              <div className="flex bg-gray-100 rounded-md p-1">
+              <div className="flex bg-gray-100 rounded-md p-1 self-start sm:self-auto">
                 <button 
-                  className={`px-3 py-1 text-sm rounded-md transition-colors ${selectedTimeframe === '1m' 
+                  className={`px-2 py-1 text-xs md:text-sm rounded-md transition-colors ${selectedTimeframe === '1m' 
                     ? 'bg-white shadow text-primary-600' 
                     : 'hover:bg-gray-200'}`}
                   onClick={() => setSelectedTimeframe('1m')}
@@ -292,7 +291,7 @@ const Dashboard = () => {
                   1M
                 </button>
                 <button 
-                  className={`px-3 py-1 text-sm rounded-md transition-colors ${selectedTimeframe === '3m' 
+                  className={`px-2 py-1 text-xs md:text-sm rounded-md transition-colors ${selectedTimeframe === '3m' 
                     ? 'bg-white shadow text-primary-600' 
                     : 'hover:bg-gray-200'}`}
                   onClick={() => setSelectedTimeframe('3m')}
@@ -300,7 +299,7 @@ const Dashboard = () => {
                   3M
                 </button>
                 <button 
-                  className={`px-3 py-1 text-sm rounded-md transition-colors ${selectedTimeframe === '6m' 
+                  className={`px-2 py-1 text-xs md:text-sm rounded-md transition-colors ${selectedTimeframe === '6m' 
                     ? 'bg-white shadow text-primary-600' 
                     : 'hover:bg-gray-200'}`}
                   onClick={() => setSelectedTimeframe('6m')}
@@ -308,7 +307,7 @@ const Dashboard = () => {
                   6M
                 </button>
                 <button 
-                  className={`px-3 py-1 text-sm rounded-md transition-colors ${selectedTimeframe === 'all' 
+                  className={`px-2 py-1 text-xs md:text-sm rounded-md transition-colors ${selectedTimeframe === 'all' 
                     ? 'bg-white shadow text-primary-600' 
                     : 'hover:bg-gray-200'}`}
                   onClick={() => setSelectedTimeframe('all')}
@@ -317,15 +316,15 @@ const Dashboard = () => {
                 </button>
               </div>
             </div>
-            <div className="h-64">
+            <div className="h-48 md:h-64">
               <ResponsiveContainer width="100%" height="100%">
                 <BarChart
                   data={getFilteredMonthlyData()}
-                  margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
+                  margin={{ top: 5, right: 10, left: 0, bottom: 5 }}
                 >
                   <CartesianGrid strokeDasharray="3 3" vertical={false} />
-                  <XAxis dataKey="name" />
-                  <YAxis />
+                  <XAxis dataKey="name" tick={{ fontSize: 12 }} />
+                  <YAxis tick={{ fontSize: 12 }} width={30} />
                   <Tooltip formatter={(value) => [`${formatNumber(Number(value))} APE`, 'Investment']} />
                   <Bar dataKey="value" fill="#4f46e5" radius={[4, 4, 0, 0]} />
                 </BarChart>
@@ -335,70 +334,75 @@ const Dashboard = () => {
         </div>
 
         {/* Project Rankings */}
-        <div className="bg-white p-6 rounded-lg shadow hover:shadow-md transition-shadow mb-8">
-          <h3 className="text-lg font-medium text-gray-900 mb-6 flex items-center">
-            <TrendingUp className="w-5 h-5 mr-2 text-primary-600" />
+        <div className="bg-white p-4 md:p-6 rounded-lg shadow hover:shadow-md transition-shadow mb-6 md:mb-8">
+          <h3 className="text-base md:text-lg font-medium text-gray-900 mb-4 md:mb-6 flex items-center">
+            <TrendingUp className="w-4 h-4 md:w-5 md:h-5 mr-2 text-primary-600" />
             Top Projects by Investment
           </h3>
-          <div className="overflow-x-auto">
-            <table className="min-w-full divide-y divide-gray-200">
-              <thead className="bg-gray-50">
-                <tr>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Project Name</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Location</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Price Per Share</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Sold Shares</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Total Investment</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Progress</th>
-                </tr>
-              </thead>
-              <tbody className="bg-white divide-y divide-gray-200">
-                {projects.length > 0 ? (
-                  projects
-                    .sort((a, b) => b.investmentValue - a.investmentValue)
-                    .map((project) => (
-                      <tr key={project.id} className="hover:bg-gray-50">
-                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{project.title}</td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{project.location}</td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{project.pricePerShare.toFixed(2)} APE</td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                          {formatNumber(project.soldShares)} / {formatNumber(project.totalShares)}
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 font-medium">
-                          {formatNumber(project.investmentValue, 2)} APE
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap">
-                          <div className="w-full bg-gray-200 rounded-full h-2">
-                            <div 
-                              className="bg-primary-600 h-2 rounded-full" 
-                              style={{ width: `${(project.soldShares / project.totalShares) * 100}%` }}
-                            ></div>
-                          </div>
-                          <span className="text-xs text-gray-500 mt-1">
-                            {((project.soldShares / project.totalShares) * 100).toFixed(0)}%
-                          </span>
+          <div className="overflow-x-auto -mx-4 md:mx-0">
+            <div className="inline-block min-w-full align-middle px-4 md:px-0">
+              <div className="overflow-hidden">
+                <table className="min-w-full divide-y divide-gray-200">
+                  <thead className="bg-gray-50">
+                    <tr>
+                      <th className="px-3 md:px-6 py-2 md:py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Project Name</th>
+                      <th className="px-3 md:px-6 py-2 md:py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Location</th>
+                      <th className="px-3 md:px-6 py-2 md:py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Price</th>
+                      <th className="px-3 md:px-6 py-2 md:py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Sold</th>
+                      <th className="px-3 md:px-6 py-2 md:py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Investment</th>
+                      <th className="px-3 md:px-6 py-2 md:py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Progress</th>
+                    </tr>
+                  </thead>
+                  <tbody className="bg-white divide-y divide-gray-200">
+                    {projects.length > 0 ? (
+                      projects
+                        .sort((a, b) => b.investmentValue - a.investmentValue)
+                        .map((project) => (
+                          <tr key={project.id} className="hover:bg-gray-50">
+                            <td className="px-3 md:px-6 py-2 md:py-4 whitespace-nowrap text-xs md:text-sm font-medium text-gray-900">{project.title}</td>
+                            <td className="px-3 md:px-6 py-2 md:py-4 whitespace-nowrap text-xs md:text-sm text-gray-500">{project.location}</td>
+                            <td className="px-3 md:px-6 py-2 md:py-4 whitespace-nowrap text-xs md:text-sm text-gray-500">{project.pricePerShare.toFixed(2)} APE</td>
+                            <td className="px-3 md:px-6 py-2 md:py-4 whitespace-nowrap text-xs md:text-sm text-gray-500">
+                              <span className="lg:hidden">{((project.soldShares / project.totalShares) * 100).toFixed(0)}%</span>
+                              <span className="hidden lg:inline">{formatNumber(project.soldShares)} / {formatNumber(project.totalShares)}</span>
+                            </td>
+                            <td className="px-3 md:px-6 py-2 md:py-4 whitespace-nowrap text-xs md:text-sm text-gray-900 font-medium">
+                              {formatNumber(project.investmentValue, 2)} APE
+                            </td>
+                            <td className="px-3 md:px-6 py-2 md:py-4 whitespace-nowrap">
+                              <div className="w-full bg-gray-200 rounded-full h-2">
+                                <div 
+                                  className="bg-primary-600 h-2 rounded-full" 
+                                  style={{ width: `${(project.soldShares / project.totalShares) * 100}%` }}
+                                ></div>
+                              </div>
+                              <span className="text-xs text-gray-500 mt-1">
+                                {((project.soldShares / project.totalShares) * 100).toFixed(0)}%
+                              </span>
+                            </td>
+                          </tr>
+                        ))
+                    ) : (
+                      <tr>
+                        <td colSpan={6} className="px-3 md:px-6 py-2 md:py-4 text-center text-xs md:text-sm text-gray-500">
+                          No projects available
                         </td>
                       </tr>
-                    ))
-                ) : (
-                  <tr>
-                    <td colSpan={6} className="px-6 py-4 text-center text-sm text-gray-500">
-                      No projects available
-                    </td>
-                  </tr>
-                )}
-              </tbody>
-            </table>
+                    )}
+                  </tbody>
+                </table>
+              </div>
+            </div>
           </div>
         </div>
 
         {/* Recent Activities - Using real data from projects */}
-        <div className="bg-white p-6 rounded-lg shadow hover:shadow-md transition-shadow">
-          <h3 className="text-lg font-medium text-gray-900 mb-6 flex items-center">
-            <Activity className="w-5 h-5 mr-2 text-primary-600" />
+        <div className="bg-white p-4 md:p-6 rounded-lg shadow hover:shadow-md transition-shadow">
+          <h3 className="text-base md:text-lg font-medium text-gray-900 mb-4 md:mb-6 flex items-center">
+            <Activity className="w-4 h-4 md:w-5 md:h-5 mr-2 text-primary-600" />
             Recent Activities
           </h3>
-          <div className="space-y-4">
+          <div className="space-y-3 md:space-y-4">
             {projects.length > 0 ? (
               projects.slice(0, 4).map((project, index) => {
                 // Create activity types based on the project data
@@ -407,28 +411,28 @@ const Dashboard = () => {
                 if (index === 0) {
                   activityType = 'investment';
                   activityContent = (
-                    <p className="text-sm text-gray-600">
+                    <p className="text-xs md:text-sm text-gray-600">
                       <span className="font-medium text-gray-900">{formatAddress('0x7a653f5e42ce472f32dc51a22')}</span> invested <span className="font-medium text-gray-900">{(project.pricePerShare * 10).toFixed(1)} APE</span> in <span className="font-medium text-gray-900">{project.title}</span>
                     </p>
                   );
                 } else if (index === 1) {
                   activityType = 'newProject';
                   activityContent = (
-                    <p className="text-sm text-gray-600">
+                    <p className="text-xs md:text-sm text-gray-600">
                       New project <span className="font-medium text-gray-900">{project.title}</span> in <span className="font-medium text-gray-900">{project.location}</span> was added
                     </p>
                   );
                 } else if (project.soldShares >= project.totalShares * 0.9) {
                   activityType = 'soldOut';
                   activityContent = (
-                    <p className="text-sm text-gray-600">
+                    <p className="text-xs md:text-sm text-gray-600">
                       Project <span className="font-medium text-gray-900">{project.title}</span> in <span className="font-medium text-gray-900">{project.location}</span> is nearly sold out
                     </p>
                   );
                 } else {
                   activityType = 'investment';
                   activityContent = (
-                    <p className="text-sm text-gray-600">
+                    <p className="text-xs md:text-sm text-gray-600">
                       <span className="font-medium text-gray-900">{formatAddress('0x3b29c7e42ce472f32dc51a22')}</span> invested <span className="font-medium text-gray-900">{(project.pricePerShare * 22).toFixed(1)} APE</span> in <span className="font-medium text-gray-900">{project.title}</span>
                     </p>
                   );
@@ -439,23 +443,23 @@ const Dashboard = () => {
                 const timeString = days === 1 ? '1 day ago' : `${days} days ago`;
                 
                 return (
-                  <div key={index} className="flex items-start p-4 border-l-4 border-primary-600 bg-gray-50 hover:bg-gray-100 transition-colors">
-                    <div className="flex-shrink-0 mr-4">
+                  <div key={index} className="flex items-start p-3 md:p-4 border-l-4 border-primary-600 bg-gray-50 hover:bg-gray-100 transition-colors">
+                    <div className="flex-shrink-0 mr-3 md:mr-4">
                       {activityType === 'investment' ? (
-                        <div className="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center">
-                          <svg className="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <div className="w-8 h-8 md:w-10 md:h-10 rounded-full bg-green-100 flex items-center justify-center">
+                          <svg className="w-4 h-4 md:w-6 md:h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                           </svg>
                         </div>
                       ) : activityType === 'newProject' ? (
-                        <div className="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center">
-                          <svg className="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <div className="w-8 h-8 md:w-10 md:h-10 rounded-full bg-blue-100 flex items-center justify-center">
+                          <svg className="w-4 h-4 md:w-6 md:h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
                           </svg>
                         </div>
                       ) : (
-                        <div className="w-10 h-10 rounded-full bg-red-100 flex items-center justify-center">
-                          <svg className="w-6 h-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <div className="w-8 h-8 md:w-10 md:h-10 rounded-full bg-red-100 flex items-center justify-center">
+                          <svg className="w-4 h-4 md:w-6 md:h-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
                           </svg>
                         </div>
@@ -469,9 +473,9 @@ const Dashboard = () => {
                 );
               })
             ) : (
-              <div className="flex items-center justify-center p-6 bg-gray-50 rounded-lg">
-                <AlertCircle className="w-5 h-5 text-gray-400 mr-2" />
-                <p className="text-gray-500">No recent activities to display</p>
+              <div className="flex items-center justify-center p-4 md:p-6 bg-gray-50 rounded-lg">
+                <AlertCircle className="w-4 h-4 md:w-5 md:h-5 text-gray-400 mr-2" />
+                <p className="text-xs md:text-sm text-gray-500">No recent activities to display</p>
               </div>
             )}
           </div>

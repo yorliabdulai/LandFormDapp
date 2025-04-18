@@ -281,18 +281,18 @@ const AdminDashboard: React.FC = () => {
               <div className="w-2 h-2 bg-green-500 rounded-full mr-2"></div>
               <span className="hidden sm:inline">Connected</span>
             </div>
-            <button 
+            {/* <button 
               className="sm:hidden p-2 text-gray-500 hover:text-gray-700"
               onClick={() => setIsMobileMenuOpen(true)}
             >
               <Menu size={20} />
-            </button>
+            </button> */}
           </div>
         </div>
       </div>
 
       {/* Mobile Menu Overlay */}
-      {isMobileMenuOpen && (
+      {/* {isMobileMenuOpen && (
         <div className="fixed inset-0 z-50 bg-gray-900 bg-opacity-75">
           <div className="fixed inset-y-0 right-0 max-w-xs w-full bg-white shadow-xl flex flex-col">
             <div className="p-4 border-b border-gray-200 flex justify-between items-center">
@@ -340,7 +340,7 @@ const AdminDashboard: React.FC = () => {
             </div>
           </div>
         </div>
-      )}
+      )} */}
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
         {/* Key Metrics */}
