@@ -27,6 +27,7 @@ export default defineConfig({
   },
   build: {
     rollupOptions: {
+      external: ['@safe-globalThis/safe-apps-sdk'],
       plugins: [
         rollupNodePolyFill(), 
       ],
