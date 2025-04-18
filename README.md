@@ -106,6 +106,50 @@ VITE_FILEBASE_API_SECRET= your_filebase_api_secret_key
 ```
 
 ---
+🔗 NFT Integration for Decentralized Land Ownership
+We are integrating NFT capabilities into LandForm to enhance transparency, security, and immutability of land ownership records — while eliminating the risks of fund centralization.
+
+NFTs (Non-Fungible Tokens) enable the representation of unique land parcels on-chain, allowing secure, verifiable ownership that is:
+
+📜 Immutable
+
+🔎 Transparent
+
+🔐 Tamper-proof
+
+🌍 Decentralized
+
+🛠️ Integration Plan
+We understand the importance of embedding NFT functionality directly into our investment and land registration flow. Here's how we're doing it:
+
+🧱 Contract Enhancements
+Modify the smart contract logic to mint an NFT automatically when a land share is purchased or registered.
+
+🧾 ProjectForm Component Upgrade
+Enhance the frontend ProjectForm to:
+
+Include fields for NFT metadata (e.g. location, GPS coordinates, images)
+
+Preview NFT metadata before minting
+
+Link minted token ID with the registered land record
+
+🖼 NFT Visualization & Management
+
+Add a section to display owned land NFTs
+
+Provide transfer functionality to allow peer-to-peer land ownership exchanges
+
+Visualize metadata using wagmi, viem, and rainbowkit
+
+🌐 Long-Term Benefits
+💰 Funds and ownership are verifiable on-chain
+
+🧬 Prevents centralization by decentralizing control via tokens
+
+🧑‍🤝‍🧑 Empowers communities to own, trade, and inherit land assets securely
+
+🔄 Unlocks possibilities for future DeFi land derivatives
 
 ## 💡 Contribution
 
