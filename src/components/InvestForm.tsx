@@ -11,7 +11,7 @@ type Project = {
   pricePerShare: bigint;
   totalShares: bigint;
   availableShares: bigint;
-  imageURL: string;
+  imageId: string;
   description: string;
   owner: string;
 };

@@ -24,11 +24,181 @@ interface Project {
   title: string;
   location: string;
   imageURL?: string;
+  imageId?: string;
   pricePerShare: string | number;
   availableShares: string | number;
   totalShares: string | number;
   isActive: boolean;
 }
+
+// Helper function to format IPFS URLs with proper logging
+const formatIPFSUrl = (url: string) => {
+  if (!url) {
+    return "/api/placeholder/400/250";
+  }
+  
+  let formattedUrl = url;
+  
+  // Check if the URL is an IPFS hash/CID
+  if (url.startsWith('Qm') || url.startsWith('bafy')) {
+    formattedUrl = `https://ipfs.filebase.io/ipfs/${url}`;
+  } else if (url.startsWith('ipfs://')) {
+    formattedUrl = url.replace('ipfs://', 'https://ipfs.filebase.io/ipfs/');
+  } else if (url.includes('ipfs/')) {
+    try {
+      const parts = url.split('ipfs/');
+      if (parts.length > 1) {
+        const cid = parts[1].split('/')[0]; // Extract CID
+        formattedUrl = `https://ipfs.filebase.io/ipfs/${cid}`;
+      }
+    } catch (error) {
+      console.error("Error processing IPFS path:", error);
+    }
+  }
+  
+  return formattedUrl;
+};
+
+// ProjectCard Component
+const ProjectCard = ({ project, onClick }: { project: Project, onClick?: () => void }) => {
+  const [imageUrl, setImageUrl] = useState<string>("/api/placeholder/400/250");
+  const [imageError, setImageError] = useState<boolean>(false);
+  
+  useEffect(() => {
+    // Use either imageURL or imageId depending on what's available
+    const imageIdentifier = project?.imageURL || project?.imageId;
+    if (imageIdentifier) {
+      const formattedUrl = formatIPFSUrl(imageIdentifier);
+      setImageUrl(formattedUrl);
+      
+      // Pre-load the image to test if it works
+      const img = new Image();
+      img.onload = () => {
+        setImageError(false);
+      };
+      
+      img.onerror = () => {
+        setImageError(true);
+        
+        // Try an alternative gateway if the first one fails
+        const altUrl = `https://ipfs.io/ipfs/${imageIdentifier.replace('ipfs://', '').replace(/^.*ipfs\//, '')}`;
+        setImageUrl(altUrl);
+      };
+      
+      img.src = formattedUrl;
+    }
+  }, [project]);
+
+  // Function to format price to readable format
+  const formatPrice = (weiValue: string | number): string => {
+    if (!weiValue) return "0";
+    // Convert BigInt to Number (safe for display purposes)
+    const etherValue = Number(weiValue) / 1e18;
+    return etherValue.toFixed(2);
+  };
+
+  // Function to calculate availability percentage
+  const calculateAvailability = (available: string | number, total: string | number): string => {
+    if (!available || !total || Number(total) === 0) return "0";
+    return (Number(available) / Number(total) * 100).toFixed(0);
+  };
+
+  // Function to get status tag based on availability
+  const getStatusTag = (available: string | number, total: string | number) => {
+    const percentage = Number(available) / Number(total) * 100;
+    
+    if (percentage < 20) {
+      return <span className="absolute top-2 right-2 bg-yellow-100 text-yellow-800 text-xs font-semibold px-2.5 py-0.5 rounded flex items-center gap-1">
+        <Info className="w-3 h-3" /> Limited
+      </span>;
+    } else if (percentage < 50) {
+      return <span className="absolute top-2 right-2 bg-primary-100 text-primary-800 text-xs font-semibold px-2.5 py-0.5 rounded flex items-center gap-1">
+        <BarChart3 className="w-3 h-3" /> High Demand
+      </span>;
+    } else {
+      return <span className="absolute top-2 right-2 bg-secondary-100 text-secondary-800 text-xs font-semibold px-2.5 py-0.5 rounded flex items-center gap-1">
+        <FileCheck className="w-3 h-3" /> New
+      </span>;
+    }
+  };
+
+  return (
+    <div 
+      className="card hover:translate-y-[-5px] transition-all duration-300 bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md"
+      onClick={onClick}
+    >
+      <div className="relative">
+        {imageError ? (
+          <div className="w-full h-48 bg-gray-100 flex items-center justify-center">
+            <p className="text-sm text-gray-500">Image unavailable</p>
+          </div>
+        ) : (
+          <img 
+            src={imageUrl} 
+            alt={project.title} 
+            className="w-full h-48 object-cover"
+            onError={(e) => {
+              (e.target as HTMLImageElement).onerror = null; // Prevent infinite loop
+              setImageError(true);
+              
+              // Try a different gateway as fallback
+              if (!imageUrl.includes('ipfs.io')) {
+                const imageIdentifier = project?.imageURL || project?.imageId;
+                const fallbackUrl = `https://ipfs.io/ipfs/${imageIdentifier?.replace('ipfs://', '').replace(/^.*ipfs\//, '')}`;
+                setImageUrl(fallbackUrl);
+                setImageError(false);
+              }
+            }}
+          />
+        )}
+        {getStatusTag(project.availableShares, project.totalShares)}
+      </div>
+      <div className="p-6">
+        <div className="mb-2">
+          <h3 className="text-xl font-semibold text-gray-900">{project.title}</h3>
+          <div className="flex items-center mt-1 text-gray-600 text-sm">
+            <MapPin className="h-4 w-4 mr-1" />
+            {project.location}
+          </div>
+        </div>
+        <div className="flex justify-between mb-4 mt-4">
+          <div>
+            <p className="text-xs text-gray-500 flex items-center">
+              <DollarSign className="h-3 w-3 mr-1" />
+              Share Price
+            </p>
+            <p className="text-lg font-semibold text-gray-900">{formatPrice(project.pricePerShare)} ETH</p>
+          </div>
+          <div>
+            <p className="text-xs text-gray-500 flex items-center">
+              <BarChart3 className="h-3 w-3 mr-1" />
+              Available
+            </p>
+            <p className="text-lg font-semibold text-gray-900">
+              {Number(project.availableShares).toLocaleString()}/{Number(project.totalShares).toLocaleString()}
+            </p>
+          </div>
+        </div>
+        <div className="relative w-full bg-gray-200 rounded-full h-2.5 mb-4">
+          <div 
+            className="bg-primary-600 h-2.5 rounded-full transition-all duration-500" 
+            style={{ width: `${calculateAvailability(project.availableShares, project.totalShares)}%` }}
+          ></div>
+          <span className="absolute right-0 top-3 text-xs text-gray-500">
+            {calculateAvailability(project.availableShares, project.totalShares)}% available
+          </span>
+        </div>
+        <Link 
+          to={`/projects/${project.id.toString()}`} 
+          className="block w-full text-center bg-primary-600 hover:bg-primary-700 text-white py-2 rounded-md transition-colors mt-6 flex items-center justify-center"
+        >
+          View Project
+          <ArrowRight className="ml-2 h-4 w-4" />
+        </Link>
+      </div>
+    </div>
+  );
+};
 
 const Home = () => {
   const { isConnected } = useAccount();
@@ -65,39 +235,6 @@ const Home = () => {
       });
     }
   }, [projectsData]);
-
-  // Function to format price to readable format
-  const formatPrice = (weiValue: string | number): string => {
-    if (!weiValue) return "0";
-    // Convert BigInt to Number (safe for display purposes)
-    const etherValue = Number(weiValue) / 1e18;
-    return etherValue.toFixed(2);
-  };
-
-  // Function to calculate availability percentage
-  const calculateAvailability = (available: string | number, total: string | number): string => {
-    if (!available || !total || Number(total) === 0) return "0";
-    return (Number(available) / Number(total) * 100).toFixed(0);
-  };
-
-  // Function to get status tag based on availability
-  const getStatusTag = (available: string | number, total: string | number) => {
-    const percentage = Number(available) / Number(total) * 100;
-    
-    if (percentage < 20) {
-      return <span className="bg-yellow-100 text-yellow-800 text-xs font-semibold px-2.5 py-0.5 rounded flex items-center gap-1">
-        <Info className="w-3 h-3" /> Limited
-      </span>;
-    } else if (percentage < 50) {
-      return <span className="bg-primary-100 text-primary-800 text-xs font-semibold px-2.5 py-0.5 rounded flex items-center gap-1">
-        <BarChart3 className="w-3 h-3" /> High Demand
-      </span>;
-    } else {
-      return <span className="bg-secondary-100 text-secondary-800 text-xs font-semibold px-2.5 py-0.5 rounded flex items-center gap-1">
-        <FileCheck className="w-3 h-3" /> New
-      </span>;
-    }
-  };
 
   const handleExploreClick = () => {
     toast.success('Exploring available projects', {
@@ -282,63 +419,11 @@ const Home = () => {
             <>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
                 {featuredProjects.map(project => (
-                  <div 
+                  <ProjectCard 
                     key={project.id.toString()} 
-                    className="card hover:translate-y-[-5px] transition-all duration-300 bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md"
-                  >
-                    <div className="relative">
-                      <img 
-                        src={project.imageURL ? `https://api.filebase.io/v1/ipfs/${project.imageURL}` : "/api/placeholder/400/250"} 
-                        alt={project.title} 
-                        className="w-full h-48 object-cover"
-                      />
-                      {getStatusTag(project.availableShares, project.totalShares)}
-                    </div>
-                    <div className="p-6">
-                      <div className="mb-2">
-                        <h3 className="text-xl font-semibold text-gray-900">{project.title}</h3>
-                        <div className="flex items-center mt-1 text-gray-600 text-sm">
-                          <MapPin className="h-4 w-4 mr-1" />
-                          {project.location}
-                        </div>
-                      </div>
-                      <div className="flex justify-between mb-4 mt-4">
-                        <div>
-                          <p className="text-xs text-gray-500 flex items-center">
-                            <DollarSign className="h-3 w-3 mr-1" />
-                            Share Price
-                          </p>
-                          <p className="text-lg font-semibold text-gray-900">{formatPrice(project.pricePerShare)} ETH</p>
-                        </div>
-                        <div>
-                          <p className="text-xs text-gray-500 flex items-center">
-                            <BarChart3 className="h-3 w-3 mr-1" />
-                            Available
-                          </p>
-                          <p className="text-lg font-semibold text-gray-900">
-                            {Number(project.availableShares).toLocaleString()}/{Number(project.totalShares).toLocaleString()}
-                          </p>
-                        </div>
-                      </div>
-                      <div className="relative w-full bg-gray-200 rounded-full h-2.5 mb-4">
-                        <div 
-                          className="bg-primary-600 h-2.5 rounded-full transition-all duration-500" 
-                          style={{ width: `${calculateAvailability(project.availableShares, project.totalShares)}%` }}
-                        ></div>
-                        <span className="absolute right-0 top-3 text-xs text-gray-500">
-                          {calculateAvailability(project.availableShares, project.totalShares)}% available
-                        </span>
-                      </div>
-                      <Link 
-                        to={`/projects/${project.id.toString()}`} 
-                        className="block w-full text-center bg-primary-600 hover:bg-primary-700 text-white py-2 rounded-md transition-colors mt-6 flex items-center justify-center"
-                        onClick={() => toast.success(`Viewing ${project.title} details`, { duration: 2000 })}
-                      >
-                        View Project
-                        <ArrowRight className="ml-2 h-4 w-4" />
-                      </Link>
-                    </div>
-                  </div>
+                    project={project}
+                    onClick={() => toast.success(`Viewing ${project.title} details`, { duration: 2000 })}
+                  />
                 ))}
               </div>
 
