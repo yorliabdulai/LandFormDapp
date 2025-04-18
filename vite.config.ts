@@ -7,7 +7,7 @@ export default defineConfig({
   plugins: [react()],
   resolve: {
     alias: {
-      'global': "rollup-plugin-node-polyfills/polyfills/global",
+      'global': "global",
       "@": path.resolve("src"),
       "@widgets": path.resolve("src/widgets"),
       "@features": path.resolve("src/features"),
@@ -16,7 +16,7 @@ export default defineConfig({
     },
   },
   define: {
-    global: "rollup-plugin-node-polyfills/polyfills/global",
+    global: "global",
   },
   optimizeDeps: {
     include: [
