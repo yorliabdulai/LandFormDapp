@@ -1,7 +1,7 @@
 // config/blockchain.ts
 import { defineChain, type AppKitNetwork } from '@reown/appkit/networks';
 
-const chainId = parseInt(import.meta.env.VITE_APECHAIN_CHAIN_ID || '33139', 10);
+const chainId = parseInt(import.meta.env.VITE_APECHAIN_CHAIN_ID , 10);
 
 export const apeChain = defineChain({
   id: chainId,

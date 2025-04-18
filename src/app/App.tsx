@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import { WagmiProvider } from "wagmi";
 import { RainbowKitProvider, darkTheme } from "@rainbow-me/rainbowkit";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { wallets } from '../config/rainbowkit';
 import { config } from "../config/wagmi"; // Ensure wagmi config is separate and built properly
 import { AdminDashboard, ManageProjects, UserManagement, OwnershipTransfers, AdminGate } from "@/pages/Admin";
 import './index.css';
@@ -22,7 +23,11 @@ const App: FC = () => {
   return (
     <WagmiProvider config={config}>
       <QueryClientProvider client={queryClient}>
-        <RainbowKitProvider theme={darkTheme()}>
+        <RainbowKitProvider  
+         theme={darkTheme()}appInfo={{
+        appName: 'LandForm',
+        learnMoreUrl: 'https://landformdapp.netlify.app/',
+      }} >
           <Router>
             <Routes>
               <Route path="/" element={<Layout />}>

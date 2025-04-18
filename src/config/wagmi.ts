@@ -1,11 +1,13 @@
 // config/wagmi.ts
 import { http, createConfig, fallback } from 'wagmi';
-import { walletConnect } from '@wagmi/connectors';
+import { 
+  getDefaultWallets 
+} from '@rainbow-me/rainbowkit';
 import { apeChainWagmi } from './wagmiChain';
 
 // Create a custom HTTP client with retry logic
 const httpWithRetry = (url: string) => http(url, {
-  timeout: 10000, // 10 seconds timeout
+  timeout: 10000,
   fetchOptions: {
     cache: 'no-store',
   },
@@ -19,14 +21,16 @@ const createTransport = () => {
   return fallback(rpcs.map(url => httpWithRetry(url)));
 };
 
+const projectId = import.meta.env.VITE_WALLETCONNECT_PROJECT_ID || '';
+
+const { connectors } = getDefaultWallets({
+  appName: 'LandForm',
+  projectId: projectId,
+});
+
 export const config = createConfig({
   chains: [apeChainWagmi],
-  connectors: [
-    walletConnect({
-      projectId: import.meta.env.VITE_WALLETCONNECT_PROJECT_ID || '',
-      showQrModal: true,
-    }),
-  ],
+  connectors, // Using connectors from getDefaultWallets
   transports: {
     [apeChainWagmi.id]: createTransport(),
   },
