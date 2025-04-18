@@ -1,4 +1,4 @@
-export const CONTRACT_ADDRESS = import.meta.env.VITE_CONTRACT_ADDRESS; // Replace with your contract address
+export const CONTRACT_ADDRESS = import.meta.env.VITE_CONTRACT_ADDRESS; 
 
 export const LandFormABI =[
   {
