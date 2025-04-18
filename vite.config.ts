@@ -7,7 +7,7 @@ export default defineConfig({
   plugins: [react()],
   resolve: {
     alias: {
-      'global': "globalThis",
+      'global': "rollup-plugin-node-polyfills/polyfills/global",
       "@": path.resolve("src"),
       "@widgets": path.resolve("src/widgets"),
       "@features": path.resolve("src/features"),
@@ -16,7 +16,7 @@ export default defineConfig({
     },
   },
   define: {
-    global: "globalThis",
+    global: "rollup-plugin-node-polyfills/polyfills/global",
   },
   optimizeDeps: {
     include: [
@@ -27,7 +27,6 @@ export default defineConfig({
   },
   build: {
     rollupOptions: {
-      external: ['@safe-globalThis/safe-apps-sdk'],
       plugins: [
         rollupNodePolyFill(), 
       ],
