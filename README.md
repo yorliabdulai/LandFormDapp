@@ -35,7 +35,7 @@ A modern, scalable, and responsive **Web3 Land Ownership DApp** frontend built w
 ### 🛠 Installation
 
 ```bash
-git clone https://github.com/your-org/landdappfrontend.git
+git clone https://github.com/yorliabdulai/LandFormDapp
 cd landdappfrontend
 npm install
 ```
