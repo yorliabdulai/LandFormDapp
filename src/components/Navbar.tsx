@@ -2,6 +2,7 @@ import React from 'react'
 import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { ConnectButton } from '@rainbow-me/rainbowkit';
+import { Settings } from 'lucide-react';
 
 const Navbar = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -41,7 +42,14 @@ const Navbar = () => {
               ))}
             </div>
           </div>
-          <div className="hidden sm:ml-6 sm:flex sm:items-center">
+          <div className="hidden sm:ml-6 sm:flex sm:items-center space-x-4">
+            <Link 
+              to="/admin"
+              className="text-gray-500 hover:text-gray-700"
+              title="Admin"
+            >
+              <Settings className="h-6 w-6" />
+            </Link>
             <ConnectButton />
           </div>
           
@@ -83,6 +91,14 @@ const Navbar = () => {
                 {link.name}
               </Link>
             ))}
+            <Link
+              to="/admin"
+              className="flex items-center border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700 pl-3 pr-4 py-2 border-l-4 text-base font-medium"
+              onClick={() => setIsMobileMenuOpen(false)}
+            >
+              <Settings className="mr-2" size={18} />
+              Admin
+            </Link>
             <div className="mt-4 px-4">
               <ConnectButton />
             </div>

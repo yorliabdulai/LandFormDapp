@@ -26,6 +26,11 @@ import {
   AlertCircle,
   CheckCircle,
   WifiOff,
+  ChevronRight,
+  Eye,
+  Pencil,
+  Menu,
+  X
 } from "lucide-react";
 
 export interface ProjectData {
@@ -68,6 +73,7 @@ const AdminDashboard: React.FC = () => {
   const publicClient = usePublicClient();
 
   const [events, setEvents] = useState<EventItem[]>([]);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   // Watch live ProjectAdded events
   useWatchContractEvent({
@@ -116,6 +122,7 @@ const AdminDashboard: React.FC = () => {
   
     return () => clearTimeout(timeout);
   }, [projectsError, ownerError]);
+  
   const [connectionStatus, setConnectionStatus] = useState<{
     isHealthy: boolean;
     checking: boolean;
@@ -138,47 +145,46 @@ const AdminDashboard: React.FC = () => {
       });
     }
   }, [projectsError, ownerError]);
+  
   // Add this to your Page.tsx
-const [isOnline, setIsOnline] = useState(navigator.onLine);
+  const [isOnline, setIsOnline] = useState(navigator.onLine);
 
-useEffect(() => {
-  const handleOnline = () => setIsOnline(true);
-  const handleOffline = () => setIsOnline(false);
+  useEffect(() => {
+    const handleOnline = () => setIsOnline(true);
+    const handleOffline = () => setIsOnline(false);
 
-  window.addEventListener('online', handleOnline);
-  window.addEventListener('offline', handleOffline);
+    window.addEventListener('online', handleOnline);
+    window.addEventListener('offline', handleOffline);
 
-  return () => {
-    window.removeEventListener('online', handleOnline);
-    window.removeEventListener('offline', handleOffline);
-  };
-}, []);
+    return () => {
+      window.removeEventListener('online', handleOnline);
+      window.removeEventListener('offline', handleOffline);
+    };
+  }, []);
 
-// Add this to your error UI
-if (!isOnline) {
-  return (
-    <div className="flex items-center justify-center h-screen bg-gray-50">
-      <div className="max-w-md w-full bg-white p-8 rounded-lg shadow-lg border border-red-100">
-        <WifiOff className="h-12 w-12 text-red-500 mx-auto mb-4" />
-        <h2 className="text-2xl font-heading font-bold text-gray-800 text-center mb-2">
-          You're Offline
-        </h2>
-        <p className="text-gray-600 text-center mb-6">
-          Please check your internet connection and try again.
-        </p>
-        <button 
-          onClick={() => window.location.reload()}
-          className="w-full py-2 px-4 bg-primary-600 text-white font-medium rounded-md hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 transition-colors"
-        >
-          Retry
-        </button>
+  // Add this to your error UI
+  if (!isOnline) {
+    return (
+      <div className="flex items-center justify-center h-screen bg-gray-50">
+        <div className="max-w-md w-full bg-white p-8 rounded-lg shadow-lg border border-red-100">
+          <WifiOff className="h-12 w-12 text-red-500 mx-auto mb-4" />
+          <h2 className="text-2xl font-heading font-bold text-gray-800 text-center mb-2">
+            You're Offline
+          </h2>
+          <p className="text-gray-600 text-center mb-6">
+            Please check your internet connection and try again.
+          </p>
+          <button 
+            onClick={() => window.location.reload()}
+            className="w-full py-2 px-4 bg-primary-600 text-white font-medium rounded-md hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 transition-colors"
+          >
+            Retry
+          </button>
+        </div>
       </div>
-    </div>
-  );
-}
-  console.log("Public client:", publicClient);
-  console.log("Contract address:", CONTRACT_ADDRESS);
-  console.log("Is connected:", isConnected);
+    );
+  }
+
   // Display ConnectButton if wallet is not connected
   if (!isConnected) {
     return (
@@ -194,10 +200,10 @@ if (!isOnline) {
 
   if (projectsError || ownerError) {
     return (
-      <div className="flex items-center justify-center h-screen bg-gray-50">
-        <div className="max-w-md w-full bg-white p-8 rounded-lg shadow-lg border border-red-100">
+      <div className="flex items-center justify-center h-screen bg-gray-50 px-4">
+        <div className="max-w-md w-full bg-white p-6 sm:p-8 rounded-lg shadow-lg border border-red-100">
           <AlertCircle className="h-12 w-12 text-red-500 mx-auto mb-4" />
-          <h2 className="text-2xl font-heading font-bold text-gray-800 text-center mb-2">
+          <h2 className="text-xl sm:text-2xl font-heading font-bold text-gray-800 text-center mb-2">
             Connection Error
           </h2>
           <p className="text-gray-600 text-center mb-6">
@@ -225,52 +231,6 @@ if (!isOnline) {
     );
   }
 
-if (projectsError || ownerError) {
-  // Show more specific error message
-  const errorMessage = 'Unable to load data from the blockchain';
-  const isNetworkError = errorMessage.includes('network') || 
-                         errorMessage.includes('internet') || 
-                         errorMessage.includes('disconnected');
-  
-  return (
-    <div className="flex items-center justify-center h-screen bg-gray-50">
-      <div className="max-w-md w-full bg-white p-8 rounded-lg shadow-lg border border-red-100">
-        <AlertCircle className="h-12 w-12 text-red-500 mx-auto mb-4" />
-        <h2 className="text-2xl font-heading font-bold text-gray-800 text-center mb-2">
-          {isNetworkError ? 'Network Connection Error' : 'Error Loading Data'}
-        </h2>
-        <p className="text-gray-600 text-center mb-6">
-          {isNetworkError 
-            ? 'Unable to connect to the blockchain network. Please check your internet connection and try again.'
-            : 'There was a problem connecting to the blockchain. Please check your connection and try again.'}
-        </p>
-        <div className="space-y-3">
-          <button 
-            onClick={() => window.location.reload()}
-            className="w-full py-2 px-4 bg-primary-600 text-white font-medium rounded-md hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 transition-colors"
-          >
-            Retry Connection
-          </button>
-          {isNetworkError && (
-            <button 
-              onClick={() => {
-                // Here you could implement logic to try a different RPC provider
-                toast("Attempting to use alternate network...");
-                // Logic to switch providers would go here
-                setTimeout(() => window.location.reload(), 1000);
-              }}
-              className="w-full py-2 px-4 bg-blue-600 text-white font-medium rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors"
-            >
-              Try Alternate Network
-            </button>
-          )}
-        </div>
-      </div>
-      <Toaster position="top-right" />
-    </div>
-  );
-}
-
   const projects = (projectsData ?? []) as ProjectData[];
 
   // Data for charts - Convert BigInt values to Numbers
@@ -286,7 +246,7 @@ if (projectsError || ownerError) {
   ];
 
   const projectSharesData = projects.map(project => ({
-    name: project.title.length > 15 ? project.title.substring(0, 12) + '...' : project.title,
+    name: project.title.length > 10 ? project.title.substring(0, 7) + '...' : project.title,
     available: Number(project.availableShares),
     sold: Number(project.totalShares) - Number(project.availableShares)
   }));
@@ -311,35 +271,92 @@ if (projectsError || ownerError) {
 
       {/* Header */}
       <div className="bg-white border-b border-gray-200 shadow-sm">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex justify-between items-center">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6 flex justify-between items-center">
           <div>
-            <h1 className="text-3xl font-heading font-bold text-gray-800">LandForm Admin</h1>
-            <p className="text-gray-500">Blockchain Project Management Dashboard</p>
+            <h1 className="text-xl sm:text-3xl font-heading font-bold text-gray-800">LandForm Admin</h1>
+            <p className="text-xs sm:text-sm text-gray-500">Blockchain Project Management</p>
           </div>
           <div className="flex items-center space-x-2">
-            <div className="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-medium flex items-center">
+            <div className="bg-green-100 text-green-800 px-3 py-1 rounded-full text-xs sm:text-sm font-medium flex items-center">
               <div className="w-2 h-2 bg-green-500 rounded-full mr-2"></div>
-              Connected
+              <span className="hidden sm:inline">Connected</span>
             </div>
+            <button 
+              className="sm:hidden p-2 text-gray-500 hover:text-gray-700"
+              onClick={() => setIsMobileMenuOpen(true)}
+            >
+              <Menu size={20} />
+            </button>
           </div>
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* Key Metrics */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-          {/* Total Projects */}
-          <div className="bg-white rounded-lg shadow-md p-6 border border-gray-100">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm font-medium text-gray-500">Total Projects</p>
-                <p className="text-2xl font-bold text-gray-900 mt-1">{projects.length}</p>
-              </div>
-              <div className="p-3 bg-primary-50 rounded-full">
-                <Briefcase className="h-6 w-6 text-primary-600" />
+      {/* Mobile Menu Overlay */}
+      {isMobileMenuOpen && (
+        <div className="fixed inset-0 z-50 bg-gray-900 bg-opacity-75">
+          <div className="fixed inset-y-0 right-0 max-w-xs w-full bg-white shadow-xl flex flex-col">
+            <div className="p-4 border-b border-gray-200 flex justify-between items-center">
+              <h2 className="text-lg font-medium text-gray-800">Dashboard Menu</h2>
+              <button 
+                onClick={() => setIsMobileMenuOpen(false)}
+                className="text-gray-500 hover:text-gray-700"
+              >
+                <X size={20} />
+              </button>
+            </div>
+            <div className="px-4 py-2 border-b border-gray-200">
+              <p className="text-sm font-medium text-gray-500">Contract Owner</p>
+              <p className="font-medium text-gray-900 truncate text-sm mt-1" title={owner as string}>
+                {owner ? `${(owner as string).substring(0, 8)}...${(owner as string).slice(-6)}` : "Unknown"}
+              </p>
+            </div>
+            <div className="flex-1 overflow-y-auto p-4">
+              <div className="space-y-4">
+                <button onClick={() => {
+                  toast("Projects view coming soon!");
+                  setIsMobileMenuOpen(false);
+                }} className="w-full flex items-center py-2 px-3 rounded-md bg-gray-100 hover:bg-gray-200">
+                  <Briefcase size={16} className="mr-2 text-primary-600" />
+                  <span>Projects</span>
+                  <ChevronRight size={16} className="ml-auto" />
+                </button>
+                <button onClick={() => {
+                  toast("Events view coming soon!");
+                  setIsMobileMenuOpen(false);
+                }} className="w-full flex items-center py-2 px-3 rounded-md bg-gray-100 hover:bg-gray-200">
+                  <LineChartIcon size={16} className="mr-2 text-purple-600" />
+                  <span>Events</span>
+                  <ChevronRight size={16} className="ml-auto" />
+                </button>
+                <button onClick={() => {
+                  toast("Settings coming soon!");
+                  setIsMobileMenuOpen(false);
+                }} className="w-full flex items-center py-2 px-3 rounded-md bg-gray-100 hover:bg-gray-200">
+                  <Users size={16} className="mr-2 text-secondary-600" />
+                  <span>Holders</span>
+                  <ChevronRight size={16} className="ml-auto" />
+                </button>
               </div>
             </div>
-            <div className="mt-4">
+          </div>
+        </div>
+      )}
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
+        {/* Key Metrics */}
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mb-6 sm:mb-8">
+          {/* Total Projects */}
+          <div className="bg-white rounded-lg shadow-md p-4 sm:p-6 border border-gray-100">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-xs sm:text-sm font-medium text-gray-500">Total Projects</p>
+                <p className="text-lg sm:text-2xl font-bold text-gray-900 mt-1">{projects.length}</p>
+              </div>
+              <div className="p-2 sm:p-3 bg-primary-50 rounded-full">
+                <Briefcase className="h-4 w-4 sm:h-6 sm:w-6 text-primary-600" />
+              </div>
+            </div>
+            <div className="mt-3 sm:mt-4">
               <div className="h-2 bg-gray-100 rounded-full">
                 <div className="h-2 bg-primary-500 rounded-full" style={{ width: '100%' }}></div>
               </div>
@@ -347,19 +364,19 @@ if (projectsError || ownerError) {
           </div>
 
           {/* Total Shares */}
-          <div className="bg-white rounded-lg shadow-md p-6 border border-gray-100">
+          <div className="bg-white rounded-lg shadow-md p-4 sm:p-6 border border-gray-100">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-gray-500">Total Shares</p>
-                <p className="text-2xl font-bold text-gray-900 mt-1">
+                <p className="text-xs sm:text-sm font-medium text-gray-500">Total Shares</p>
+                <p className="text-lg sm:text-2xl font-bold text-gray-900 mt-1">
                   {projects.reduce((acc, project) => acc + Number(project.totalShares), 0)}
                 </p>
               </div>
-              <div className="p-3 bg-secondary-50 rounded-full">
-                <Users className="h-6 w-6 text-secondary-600" />
+              <div className="p-2 sm:p-3 bg-secondary-50 rounded-full">
+                <Users className="h-4 w-4 sm:h-6 sm:w-6 text-secondary-600" />
               </div>
             </div>
-            <div className="mt-4">
+            <div className="mt-3 sm:mt-4">
               <div className="h-2 bg-gray-100 rounded-full">
                 <div 
                   className="h-2 bg-secondary-500 rounded-full" 
@@ -373,48 +390,48 @@ if (projectsError || ownerError) {
                 ></div>
               </div>
               <div className="flex justify-between mt-1 text-xs text-gray-500">
-                <span>Available: {projects.reduce((acc, project) => acc + Number(project.availableShares), 0)}</span>
-                <span>Sold: {projects.reduce((acc, project) => acc + (Number(project.totalShares) - Number(project.availableShares)), 0)}</span>
+                <span className="text-xs">Available: {projects.reduce((acc, project) => acc + Number(project.availableShares), 0)}</span>
+                <span className="text-xs">Sold: {projects.reduce((acc, project) => acc + (Number(project.totalShares) - Number(project.availableShares)), 0)}</span>
               </div>
             </div>
           </div>
 
           {/* Events Tracked */}
-          <div className="bg-white rounded-lg shadow-md p-6 border border-gray-100">
+          <div className="bg-white rounded-lg shadow-md p-4 sm:p-6 border border-gray-100">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-gray-500">Events Tracked</p>
-                <p className="text-2xl font-bold text-gray-900 mt-1">{events.length}</p>
+                <p className="text-xs sm:text-sm font-medium text-gray-500">Events Tracked</p>
+                <p className="text-lg sm:text-2xl font-bold text-gray-900 mt-1">{events.length}</p>
               </div>
-              <div className="p-3 bg-purple-50 rounded-full">
-                <LineChartIcon className="h-6 w-6 text-purple-600" />
+              <div className="p-2 sm:p-3 bg-purple-50 rounded-full">
+                <LineChartIcon className="h-4 w-4 sm:h-6 sm:w-6 text-purple-600" />
               </div>
             </div>
-            <div className="mt-4 text-xs text-gray-500 flex justify-between">
+            <div className="mt-3 sm:mt-4 text-xs text-gray-500 flex justify-between">
               <span>Created: {events.filter(e => e.type === 'ProjectAdded').length || 0}</span>
               <span>Transfers: {events.filter(e => e.type === 'OwnershipTransferred').length || 0}</span>
             </div>
           </div>
 
           {/* Contract Owner */}
-          <div className="bg-white rounded-lg shadow-md p-6 border border-gray-100">
+          <div className="bg-white rounded-lg shadow-md p-4 sm:p-6 border border-gray-100">
             <div className="flex flex-col">
-              <p className="text-sm font-medium text-gray-500">Contract Owner</p>
+              <p className="text-xs sm:text-sm font-medium text-gray-500">Contract Owner</p>
               <div className="mt-1 flex items-center">
                 <div className="w-2 h-2 bg-green-500 rounded-full mr-2"></div>
-                <p className="font-medium text-gray-900 truncate" title={owner as string}>
-                  {owner ? `${(owner as string).substring(0, 10)}...${(owner as string).slice(-8)}` : "Unknown"}
+                <p className="font-medium text-gray-900 truncate text-xs sm:text-sm" title={owner as string}>
+                  {owner ? `${(owner as string).substring(0, 6)}...${(owner as string).slice(-4)}` : "Unknown"}
                 </p>
               </div>
-              <div className="mt-4 pt-4 border-t border-gray-100">
+              <div className="mt-3 sm:mt-4 pt-2 sm:pt-4 border-t border-gray-100">
                 <button
                   onClick={() => {
                     navigator.clipboard.writeText(owner as string);
                     toast.success("Address copied to clipboard");
                   }}
-                  className="text-sm text-primary-600 hover:text-primary-700 font-medium"
+                  className="text-xs sm:text-sm text-primary-600 hover:text-primary-700 font-medium"
                 >
-                  Copy Full Address
+                  Copy Address
                 </button>
               </div>
             </div>
@@ -422,11 +439,11 @@ if (projectsError || ownerError) {
         </div>
 
         {/* Charts */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6 sm:mb-8">
           {/* Share Distribution Pie Chart */}
-          <div className="bg-white p-6 rounded-lg shadow-md border border-gray-100">
-            <h2 className="text-lg font-heading font-semibold text-gray-800 mb-4">Share Distribution</h2>
-            <div className="h-64">
+          <div className="bg-white p-4 sm:p-6 rounded-lg shadow-md border border-gray-100">
+            <h2 className="text-base sm:text-lg font-heading font-semibold text-gray-800 mb-2 sm:mb-4">Share Distribution</h2>
+            <div className="h-52 sm:h-64">
               <ResponsiveContainer width="100%" height="100%">
                 <PieChart>
                   <Pie
@@ -446,26 +463,26 @@ if (projectsError || ownerError) {
                     ))}
                   </Pie>
                   <Tooltip formatter={(value) => [`${value} shares`, ""]} />
-                  <Legend />
+                  <Legend verticalAlign="bottom" height={36} />
                 </PieChart>
               </ResponsiveContainer>
             </div>
           </div>
 
           {/* Project Shares Bar Chart */}
-          <div className="bg-white p-6 rounded-lg shadow-md border border-gray-100">
-            <h2 className="text-lg font-heading font-semibold text-gray-800 mb-4">Project Shares</h2>
-            <div className="h-64">
+          <div className="bg-white p-4 sm:p-6 rounded-lg shadow-md border border-gray-100">
+            <h2 className="text-base sm:text-lg font-heading font-semibold text-gray-800 mb-2 sm:mb-4">Project Shares</h2>
+            <div className="h-52 sm:h-64">
               <ResponsiveContainer width="100%" height="100%">
                 <BarChart
                   data={projectSharesData}
-                  margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
+                  margin={{ top: 5, right: 5, left: 0, bottom: 5 }}
                 >
                   <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis dataKey="name" />
-                  <YAxis />
+                  <XAxis dataKey="name" tick={{ fontSize: 10 }} />
+                  <YAxis tick={{ fontSize: 10 }} />
                   <Tooltip />
-                  <Legend />
+                  <Legend verticalAlign="bottom" height={36} />
                   <Bar dataKey="available" stackId="a" fill="#16a34a" name="Available" />
                   <Bar dataKey="sold" stackId="a" fill="#0284c7" name="Sold" />
                 </BarChart>
@@ -474,9 +491,9 @@ if (projectsError || ownerError) {
           </div>
 
           {/* Event Type Pie Chart */}
-          <div className="bg-white p-6 rounded-lg shadow-md border border-gray-100">
-            <h2 className="text-lg font-heading font-semibold text-gray-800 mb-4">Event Distribution</h2>
-            <div className="h-64">
+          <div className="bg-white p-4 sm:p-6 rounded-lg shadow-md border border-gray-100">
+            <h2 className="text-base sm:text-lg font-heading font-semibold text-gray-800 mb-2 sm:mb-4">Event Distribution</h2>
+            <div className="h-52 sm:h-64">
               <ResponsiveContainer width="100%" height="100%">
                 <PieChart>
                   <Pie
@@ -496,27 +513,27 @@ if (projectsError || ownerError) {
                     ))}
                   </Pie>
                   <Tooltip formatter={(value) => [`${value} events`, ""]} />
-                  <Legend />
+                  <Legend verticalAlign="bottom" height={36} />
                 </PieChart>
               </ResponsiveContainer>
             </div>
           </div>
 
           {/* Project Price Comparison Bar Chart */}
-          <div className="bg-white p-6 rounded-lg shadow-md border border-gray-100">
-            <h2 className="text-lg font-heading font-semibold text-gray-800 mb-4">Price per Share</h2>
-            <div className="h-64">
+          <div className="bg-white p-4 sm:p-6 rounded-lg shadow-md border border-gray-100">
+            <h2 className="text-base sm:text-lg font-heading font-semibold text-gray-800 mb-2 sm:mb-4">Price per Share</h2>
+            <div className="h-52 sm:h-64">
               <ResponsiveContainer width="100%" height="100%">
                 <BarChart
                   data={projects.map((p) => ({
-                    name: p.title.length > 15 ? p.title.substring(0, 12) + "..." : p.title,
+                    name: p.title.length > 10 ? p.title.substring(0, 7) + "..." : p.title,
                     price: Number(p.pricePerShare),
                   }))}
-                  margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
+                  margin={{ top: 5, right: 5, left: 0, bottom: 5 }}
                 >
                   <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis dataKey="name" />
-                  <YAxis />
+                  <XAxis dataKey="name" tick={{ fontSize: 10 }} />
+                  <YAxis tick={{ fontSize: 10 }} />
                   <Tooltip formatter={(value) => [`${value} ETH`, "Price"]} />
                   <Bar dataKey="price" fill="#8b5cf6" />
                 </BarChart>
@@ -526,211 +543,295 @@ if (projectsError || ownerError) {
         </div>
 
         {/* Recent Activity */}
-        <div className="bg-white rounded-lg shadow-md border border-gray-100 mb-8">
-          <div className="px-6 py-4 border-b border-gray-200 flex justify-between items-center">
-            <h2 className="text-lg font-heading font-semibold text-gray-800">Recent Activity</h2>
-            <span className="bg-secondary-100 text-secondary-800 text-xs font-medium px-2.5 py-0.5 rounded-full">
+        <div className="bg-white rounded-lg shadow-md border border-gray-100 mb-6 sm:mb-8 overflow-hidden">
+          <div className="px-4 sm:px-6 py-3 sm:py-4 border-b border-gray-200 flex justify-between items-center">
+            <h2 className="text-base sm:text-lg font-heading font-semibold text-gray-800">Recent Activity</h2>
+            <span className="bg-secondary-100 text-secondary-800 text-xs font-medium px-2 py-0.5 rounded-full">
               {events.length} Events
             </span>
           </div>
           {events.length === 0 ? (
-            <div className="p-6 text-center">
-              <p className="text-gray-500">No events recorded yet</p>
+            <div className="p-4 sm:p-6 text-center">
+              <p className="text-gray-500 text-sm">No events recorded yet</p>
             </div>
           ) : (
-            <div className="overflow-hidden">
-              <table className="min-w-full divide-y divide-gray-200">
-                <thead className="bg-gray-50">
-                  <tr>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Time</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Type</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Details</th>
-                  </tr>
-                </thead>
-                <tbody className="bg-white divide-y divide-gray-200">
-                  {events.slice(0, 10).map((event, index) => (
-                    <tr key={index} className="hover:bg-gray-50">
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                        {event.timestamp}
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        {event.type === "ProjectAdded" ? (
-                          <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+            <div className="overflow-x-auto">
+              {/* Desktop Table */}
+              <div className="hidden sm:block">
+                <table className="min-w-full divide-y divide-gray-200">
+                  <thead className="bg-gray-50">
+                    <tr>
+                      <th className="px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Time</th>
+                      <th className="px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Type</th>
+                      <th className="px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Details</th>
+                    </tr>
+                  </thead>
+                  <tbody className="bg-white divide-y divide-gray-200">
+                    {events.slice(0, 5).map((event, index) => (
+                      <tr key={index} className="hover:bg-gray-50">
+                        <td className="px-4 sm:px-6 py-3 sm:py-4 whitespace-nowrap text-xs sm:text-sm text-gray-500">
+                          {event.timestamp}
+                        </td>
+                        <td className="px-4 sm:px-6 py-3 sm:py-4 whitespace-nowrap">
+                          {event.type === "ProjectAdded" ? (
+                            <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                              <CheckCircle className="w-3 h-3 mr-1" />
+                              Created
+                            </span>
+                          ) : (
+                            <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                              <Users className="w-3 h-3 mr-1" />
+                              Transfer
+                            </span>
+                          )}
+                        </td>
+                        <td className="px-4 sm:px-6 py-3 sm:py-4 text-xs sm:text-sm text-gray-500">
+                          {event.type === "ProjectAdded" && (
+                            <div className="flex flex-wrap items-center">
+                              <span className="font-medium text-gray-900">Project: {event.title}</span>
+                              <span className="ml-2 text-xs bg-gray-100 px-2 py-0.5 rounded">ID: {event.projectId}</span>
+                            </div>
+                          )}
+                          {event.type === "OwnershipTransferred" && (
+                            <div className="flex flex-wrap space-x-2">
+                              <div className="flex items-center text-xs">
+                                <span className="font-medium text-gray-700">From:</span>
+                                <span className="ml-1 font-mono bg-gray-100 px-1 py-0.5 rounded">
+                                  {event.from.substring(0, 6)}...{event.from.slice(-4)}
+                                </span>
+                              </div>
+                              <div className="flex items-center text-xs">
+                                <span className="font-medium text-gray-700">To:</span>
+                                <span className="ml-1 font-mono bg-green-100 px-1 py-0.5 rounded">
+                                  {event.to.substring(0, 6)}...{event.to.slice(-4)}
+                                </span>
+                              </div>
+                            </div>
+                          )}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+              
+              {/* Mobile Event List */}
+              <div className="sm:hidden divide-y divide-gray-200">
+                {events.slice(0, 5).map((event, index) => (
+                  <div key={index} className="px-4 py-3 hover:bg-gray-50">
+                    <div className="flex justify-between items-center mb-1">
+                      <div>
+                      {event.type === "ProjectAdded" ? (
+                          <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
                             <CheckCircle className="w-3 h-3 mr-1" />
                             Created
                           </span>
                         ) : (
-                          <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                          <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
                             <Users className="w-3 h-3 mr-1" />
                             Transfer
                           </span>
                         )}
-                      </td>
-                      <td className="px-6 py-4 text-sm text-gray-500">
-                        {event.type === "ProjectAdded" && (
-                          <div className="flex items-center">
-                            <span className="font-medium text-gray-900">Project: {event.title}</span>
-                            <span className="ml-2 text-xs bg-gray-100 px-2 py-0.5 rounded">ID: {event.projectId}</span>
-                          </div>
-                        )}
-                        {event.type === "OwnershipTransferred" && (
-                          <div>
-                            <div className="flex items-center text-xs">
-                              <span className="font-medium text-gray-700">From:</span>
-                              <span className="ml-1 font-mono bg-gray-100 px-1 py-0.5 rounded">
-                                {event.from.substring(0, 6)}...{event.from.slice(-4)}
-                              </span>
-                            </div>
-                            <div className="flex items-center text-xs mt-1">
-                              <span className="font-medium text-gray-700">To:</span>
-                              <span className="ml-1 font-mono bg-green-100 px-1 py-0.5 rounded">
-                                {event.to.substring(0, 6)}...{event.to.slice(-4)}
-                              </span>
-                            </div>
-                          </div>
-                        )}
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-              {events.length > 10 && (
-                <div className="px-6 py-3 bg-gray-50 border-t border-gray-200 text-right">
-                  <button
-                    className="text-sm font-medium text-primary-600 hover:text-primary-700"
-                    onClick={() => toast("Full event history feature coming soon!", { icon: "ℹ️" })}
-                  >
-                    View all {events.length} events
-                  </button>
-                </div>
-              )}
+                      </div>
+                      <div className="text-xs text-gray-500">{event.timestamp}</div>
+                    </div>
+                    
+                    {event.type === "ProjectAdded" && (
+                      <div className="text-sm">
+                        <span className="font-medium">Project: {event.title}</span>
+                        <span className="ml-2 text-xs bg-gray-100 px-2 py-0.5 rounded">ID: {event.projectId}</span>
+                      </div>
+                    )}
+                    
+                    {event.type === "OwnershipTransferred" && (
+                      <div className="flex flex-col space-y-1 text-xs">
+                        <div className="flex items-center">
+                          <span className="font-medium text-gray-700 w-10">From:</span>
+                          <span className="font-mono bg-gray-100 px-1 py-0.5 rounded">
+                            {event.from.substring(0, 6)}...{event.from.slice(-4)}
+                          </span>
+                        </div>
+                        <div className="flex items-center">
+                          <span className="font-medium text-gray-700 w-10">To:</span>
+                          <span className="font-mono bg-green-100 px-1 py-0.5 rounded">
+                            {event.to.substring(0, 6)}...{event.to.slice(-4)}
+                          </span>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                ))}
+              </div>
             </div>
           )}
         </div>
-        
-        {/* Projects Table */}
-        <div className="bg-white rounded-lg shadow-md border border-gray-100">
-          <div className="px-6 py-4 border-b border-gray-200 flex justify-between items-center">
-            <h2 className="text-lg font-heading font-semibold text-gray-800">Project Portfolio</h2>
-            <span className="bg-primary-100 text-primary-800 text-xs font-medium px-2.5 py-0.5 rounded-full">
-              {projects.length} Projects
-            </span>
+
+        {/* Projects List */}
+        <div className="bg-white rounded-lg shadow-md border border-gray-100 overflow-hidden">
+          <div className="px-4 sm:px-6 py-3 sm:py-4 border-b border-gray-200 flex justify-between items-center">
+            <h2 className="text-base sm:text-lg font-heading font-semibold text-gray-800">Projects</h2>
+            <button 
+              onClick={() => toast.success("Create project coming soon!")}
+              className="inline-flex items-center px-3 py-1 border border-transparent text-xs font-medium rounded-md bg-primary-600 text-white hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500"
+            >
+              New Project
+            </button>
           </div>
           
-          {projects.length === 0 ? (
-            <div className="p-6 text-center">
-              <p className="text-gray-500">No projects found</p>
+          {projectsLoading ? (
+            <div className="p-4 sm:p-6 flex justify-center">
+              <div className="animate-pulse flex space-x-4">
+                <div className="rounded-full bg-gray-200 h-10 w-10"></div>
+                <div className="flex-1 space-y-4 py-1">
+                  <div className="h-4 bg-gray-200 rounded w-3/4"></div>
+                  <div className="space-y-2">
+                    <div className="h-4 bg-gray-200 rounded"></div>
+                    <div className="h-4 bg-gray-200 rounded w-5/6"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          ) : projects.length === 0 ? (
+            <div className="p-4 sm:p-6 text-center">
+              <p className="text-gray-500 text-sm">No projects created yet</p>
             </div>
           ) : (
-            <div className="overflow-hidden">
-              <table className="min-w-full divide-y divide-gray-200">
-                <thead className="bg-gray-50">
-                  <tr>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Project</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Location</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Price/Share</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Shares</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
-                  </tr>
-                </thead>
-                <tbody className="bg-white divide-y divide-gray-200">
-                  {projects.map((project) => (
-                    <tr key={Number(project.id)} className="hover:bg-gray-50">
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        <div className="flex items-center">
-                          <div className="flex-shrink-0 h-10 w-10 rounded-md overflow-hidden">
-                            {project.imageURL ? (
-                              <img 
-                                src={project.imageURL} 
-                                alt={project.title}
-                                className="h-10 w-10 object-cover" 
-                              />
-                            ) : (
-                              <div className="h-10 w-10 bg-gray-200 flex items-center justify-center rounded-md">
-                                <Briefcase className="h-5 w-5 text-gray-400" />
-                              </div>
-                            )}
-                          </div>
-                          <div className="ml-4">
-                            <div className="text-sm font-medium text-gray-900">{project.title}</div>
-                            <div className="text-xs text-gray-500">ID: {project.id.toString()}</div>
-                          </div>
-                        </div>
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                        {project.location}
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                        {Number(project.pricePerShare)} ETH
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                        <div>
+            <div className="overflow-x-auto">
+              {/* Desktop Table */}
+              <div className="hidden sm:block">
+                <table className="min-w-full divide-y divide-gray-200">
+                  <thead className="bg-gray-50">
+                    <tr>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Title</th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Location</th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Price/Share</th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Availability</th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody className="bg-white divide-y divide-gray-200">
+                    {projects.map((project) => (
+                      <tr key={project.id.toString()} className="hover:bg-gray-50">
+                        <td className="px-6 py-4 whitespace-nowrap">
                           <div className="flex items-center">
-                            <span className="mr-2">{Number(project.availableShares)}/{Number(project.totalShares)}</span>
-                            <span className="text-xs text-green-600">{Math.round((Number(project.availableShares) / Number(project.totalShares)) * 100)}%</span>
+                            <div className="h-10 w-10 flex-shrink-0 rounded-full bg-gray-200 overflow-hidden">
+                              {project.imageURL ? (
+                                <img src={project.imageURL} alt={project.title} className="h-10 w-10 object-cover" />
+                              ) : (
+                                <div className="h-10 w-10 flex items-center justify-center text-gray-500">
+                                  <Briefcase size={20} />
+                                </div>
+                              )}
+                            </div>
+                            <div className="ml-4">
+                              <div className="text-sm font-medium text-gray-900">{project.title}</div>
+                              <div className="text-xs text-gray-500">ID: {project.id.toString()}</div>
+                            </div>
                           </div>
-                          <div className="w-full bg-gray-200 rounded-full h-1.5 mt-1">
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap">
+                          <div className="text-sm text-gray-900">{project.location}</div>
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap">
+                          <div className="text-sm text-gray-900">{Number(project.pricePerShare)} ETH</div>
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap">
+                          <div className="text-sm text-gray-900">
+                            {Number(project.availableShares)}/{Number(project.totalShares)}
+                          </div>
+                          <div className="w-24 h-2 bg-gray-200 rounded-full mt-1">
                             <div 
-                              className="bg-primary-600 h-1.5 rounded-full" 
-                              style={{ width: `${(Number(project.availableShares) / Number(project.totalShares)) * 100}%` }}
+                              className="h-2 bg-primary-500 rounded-full" 
+                              style={{ 
+                                width: `${(Number(project.availableShares) / Number(project.totalShares)) * 100}%` 
+                              }}
                             ></div>
                           </div>
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                          <div className="flex space-x-2">
+                            <button 
+                              className="text-secondary-600 hover:text-secondary-900"
+                              onClick={() => toast.success(`Viewing ${project.title}`)}
+                            >
+                              <Eye size={16} />
+                            </button>
+                            <button 
+                              className="text-primary-600 hover:text-primary-900"
+                              onClick={() => toast.success(`Editing ${project.title}`)}
+                            >
+                              <Pencil size={16} />
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+              
+              {/* Mobile Project List */}
+              <div className="sm:hidden divide-y divide-gray-200">
+                {projects.map((project) => (
+                  <div key={project.id.toString()} className="px-4 py-4 hover:bg-gray-50">
+                    <div className="flex items-center justify-between mb-2">
+                      <div className="flex items-center">
+                        <div className="h-10 w-10 flex-shrink-0 rounded-full bg-gray-200 overflow-hidden">
+                          {project.imageURL ? (
+                            <img src={project.imageURL} alt={project.title} className="h-10 w-10 object-cover" />
+                          ) : (
+                            <div className="h-10 w-10 flex items-center justify-center text-gray-500">
+                              <Briefcase size={20} />
+                            </div>
+                          )}
                         </div>
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        {Number(project.availableShares) === 0 ? (
-                          <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">
-                            Sold Out
-                          </span>
-                        ) : Number(project.availableShares) < Number(project.totalShares) / 2 ? (
-                          <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">
-                            Selling Fast
-                          </span>
-                        ) : (
-                          <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
-                            Available
-                          </span>
-                        )}
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm">
-                        <button
-                          onClick={() => {
-                            toast(`Project details feature coming soon!`, { icon: 'ℹ️' });
-                          }}
-                          className="text-primary-600 hover:text-primary-900 mr-3"
+                        <div className="ml-3">
+                          <div className="text-sm font-medium text-gray-900">{project.title}</div>
+                          <div className="text-xs text-gray-500">{project.location}</div>
+                        </div>
+                      </div>
+                      <div className="flex space-x-2">
+                        <button 
+                          className="text-secondary-600 hover:text-secondary-900 p-1"
+                          onClick={() => toast.success(`Viewing ${project.title}`)}
                         >
-                          View
+                          <Eye size={16} />
                         </button>
-                        <button
-                          onClick={() => {
-                            toast(`Edit project feature coming soon!`, { icon: 'ℹ️' });
-                          }}
-                          className="text-gray-600 hover:text-gray-900"
+                        <button 
+                          className="text-primary-600 hover:text-primary-900 p-1"
+                          onClick={() => toast.success(`Editing ${project.title}`)}
                         >
-                          Edit
+                          <Pencil size={16} />
                         </button>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
+                      </div>
+                    </div>
+                    <div className="grid grid-cols-2 gap-2 text-xs">
+                      <div>
+                        <span className="text-gray-500">Price per share:</span>
+                        <span className="ml-1 font-medium">{Number(project.pricePerShare)} ETH</span>
+                      </div>
+                      <div>
+                        <span className="text-gray-500">Available:</span>
+                        <span className="ml-1 font-medium">
+                          {Number(project.availableShares)}/{Number(project.totalShares)}
+                        </span>
+                      </div>
+                    </div>
+                    <div className="mt-2">
+                      <div className="w-full h-2 bg-gray-200 rounded-full">
+                        <div 
+                          className="h-2 bg-primary-500 rounded-full" 
+                          style={{ 
+                            width: `${(Number(project.availableShares) / Number(project.totalShares)) * 100}%` 
+                          }}
+                        ></div>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
             </div>
           )}
-        </div>
-      </div>
-
-      {/* Footer */}
-      <div className="bg-white border-t border-gray-200 mt-8">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-          <div className="flex justify-between items-center">
-            <div className="text-sm text-gray-500">
-              &copy; {new Date().getFullYear()} LandForm. All rights reserved.
-            </div>
-            <div className="text-sm text-gray-500">
-              Connected to <span className="font-medium">{publicClient?.chain?.name || "Unknown Network"}</span>
-            </div>
-          </div>
         </div>
       </div>
     </div>

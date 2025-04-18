@@ -101,7 +101,7 @@ const ManageProjects: React.FC = () => {
                           <span className="text-xs font-medium">Edit</span>
                         </Link>
                         <Link
-                          to={`/admin/projects/details/${project.id}`}
+                          to={`/admin/projects/details/${project.id.toString()}`}
                           className="p-2 bg-primary-100 text-primary-700 rounded-md hover:bg-primary-200 transition-colors flex items-center gap-1"
                         >
                           <ChevronRight size={16} />

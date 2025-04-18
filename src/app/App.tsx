@@ -41,6 +41,7 @@ const App: FC = () => {
   <Route index element={<AdminDashboard />} />
   <Route path="projects" element={<ManageProjects />} />
   <Route path="projects/new" element={<ProjectForm />} />
+  <Route path="projects/details/:id" element={<ProjectDetails />} />
   <Route path="users" element={<UserManagement />} />
   <Route path="transfers" element={<OwnershipTransfers />} />
 </Route>
